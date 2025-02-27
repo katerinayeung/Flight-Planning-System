@@ -1,11 +1,11 @@
 public class Airports{
     //attributes
-    String icao = "";
-	String name = "";
-	double latitude = 0.0;
-	double longitude = 0;
-	double commFrequencies = 0.0;
-    String fuelTypes = "";
+    private String icao;
+	private String name;
+	private double latitude ;
+	private double longitude;
+	private double commFrequencies;
+    private String fuelTypes;
 
     //constructor
     public Airports(String icao, String name, double latitude, double longitude, double commFrequencies, String fuelTypes){
