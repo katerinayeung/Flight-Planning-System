@@ -17,6 +17,7 @@ public class Airports{
         this.fuelTypes = fuelTypes;
     }
 
+    //getters and setters
     public String getIcao(){
         return icao;
     }
