@@ -1,3 +1,4 @@
+package FPS;
 public class Airports{
     //attributes
     private String icao;

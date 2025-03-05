@@ -1,3 +1,4 @@
+package FPS;
 public class Passenger {
     private String name;
     private String destination;
