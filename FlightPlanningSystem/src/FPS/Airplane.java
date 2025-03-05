@@ -79,4 +79,27 @@ public class Airplane implements AirplaneInterface {
         return fuelCapacity / fuelBurnrate;
         
     }
+
+    public void displayInfo() {
+        System.out.println("Make: " + make);
+        System.out.println("Model: " + model);
+        System.out.println("Type: " + type);
+        System.out.println("Fuel Capacity: " + fuelCapacity);
+        System.out.println("Cruise Speed: " + cruiseSpeed);
+        System.out.println("Fuel Burnrate: " + fuelBurnrate);
+    }
+
+    @Override
+    public String toString() {
+        return "Airplane{" +
+                "make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", type='" + type + '\'' +
+                ", fuelCapacity=" + fuelCapacity +
+                ", cruiseSpeed=" + cruiseSpeed +
+                ", fuelBurnrate=" + fuelBurnrate +
+                '}';
+    }
+
+
 }
