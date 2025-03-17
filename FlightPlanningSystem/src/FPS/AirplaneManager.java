@@ -24,6 +24,12 @@ public class AirplaneManager extends Airplane {
     }
 
     public void updateAirplane(Airplane airplane) {
-        // Update airplane in database
+        //Find airplane in database and update its information
+        
+    }
+
+    public void searchAirplane(String make, String model) {
+        // parse through database to find airplane with matching make and model
+        // return airplane if found
     }
 }
