@@ -57,6 +57,8 @@ public class sysmain {
 
     private static void planFlight(Passenger user, Scanner input) {
         System.out.println("\nPlanning a flight...");
+        List<String> destinations = new ArrayList<>();
+
         // Initialize destinations
         while (true) {
             System.out.print("Enter a destination (or type 'done' to finish): ");
@@ -64,16 +66,22 @@ public class sysmain {
             if (destination.equalsIgnoreCase("done")) {
                 break;
             }
-            /*if (AirportManager.searchAirport(destination)) {
-                user.getDestinations().add(destination);
-                System.out.println("Destination added: " + destination);
-            } else {
-                System.out.println("The destination does not exist or is spelled incorrectly. Please try again.");
-            }*/
+            destinations.add(destination);
         }
 
+        if (destinations.size() < 2) {
+            System.out.println("You need to provide at least two destinations for departure and arrival.");
+            return;
+        }
+
+        // Set departure airport
+        String departureAirport = destinations.get(0);
+
+        // Set arrival airports (all destinations with index > 0)
+        List<String> arrivalAirports = destinations.subList(1, destinations.size());
+
         // Initialize airplane
-        while (true) {
+                while (true) {
             System.out.print("Enter the name of the plane you want to select: ");
             String plane = input.nextLine();
             /*if (AirplaneManager.searchAirplane(plane)) {
@@ -86,10 +94,14 @@ public class sysmain {
             break;
         }
 
+        // Create a flight plan
+        FlightPlan flightPlan = new FlightPlan(departureAirport, arrivalAirports, null, null, 0, 0, 0);
+
         System.out.println("\nFlight plan created successfully!");
         System.out.println("Passenger Name: " + user.getName());
-        System.out.println("Destinations: " + user.getDestinations());
-        System.out.println("Selected Plane: " + user.getSelectedPlane());
+        System.out.println("Departure Airport: " + flightPlan.getDepartureAirport());
+        System.out.println("Arrival Airports: " + String.join(", ", arrivalAirports));
+        System.out.println("Selected Plane: " + selectedPlane);
     }
 
     private static void manageAirportDatabase(Scanner input) {
