@@ -1,3 +1,7 @@
+/*Maintains details on airports, including ICAO identifier, name, 
+ *latitude/longitude, communication frequencies, and available fuel types.  
+ */
+
 package FPS;
 public class Airports{
     //attributes
