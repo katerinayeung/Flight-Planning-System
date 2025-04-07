@@ -101,7 +101,7 @@ public class sysmain {
         System.out.println("Passenger Name: " + user.getName());
         System.out.println("Departure Airport: " + flightPlan.getDepartureAirport());
         System.out.println("Arrival Airports: " + String.join(", ", arrivalAirports));
-        System.out.println("Selected Plane: " + selectedPlane);
+        //System.out.println("Selected Plane: " + selectedPlane);
     }
 
     private static void manageAirportDatabase(Scanner input) {
