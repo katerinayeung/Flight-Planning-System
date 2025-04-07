@@ -5,7 +5,7 @@ import java.util.*;
 public class FlightPlan {
 
     private String departureAirport;
-    private String arrivalAirport;
+    private List<String> arrivalAirports; // List of arrival airports
     private String departureTime;
     private String arrivalTime;
     private double distance; // in nautical miles
@@ -15,9 +15,9 @@ public class FlightPlan {
     private List<Map<String, Object>> legs; // list of legs for the flight plan
 
 
-    public FlightPlan(String departureAirport, String arrivalAirport, String departureTime, String arrivalTime, double distance, double estimatedFlightTime, double fuelRequired) {
+    public FlightPlan(String departureAirport, List<String> arrivalAirports, String departureTime, String arrivalTime, double distance, double estimatedFlightTime, double fuelRequired) {
         this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
+        this.arrivalAirports = arrivalAirports;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.distance = distance;
@@ -30,4 +30,11 @@ public class FlightPlan {
         return departureAirport;
     }   
 
+    public List<String> getArrivalAirports() {
+        return arrivalAirports;
+    }
+
+    public void setArrivalAirports(List<String> arrivalAirports) {
+        this.arrivalAirports = arrivalAirports;
+    }
 }
