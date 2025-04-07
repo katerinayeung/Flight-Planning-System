@@ -176,6 +176,7 @@ public class sysmain {
     }
 
     private static void manageAirplaneDatabase(Scanner input) {
+        AirplaneManager AirMan = new AirplaneManager(new Airplane("", "", "", 0, 0, 0));
         System.out.println("\nManaging Airplane Database...");
         while (true) {
             System.out.println("\n1 Add an Airplane\n2 Remove an Airplane\n3 Modify an Airplane\n4 Return to the menu");
@@ -202,10 +203,10 @@ public class sysmain {
 
                     /*if (AirplaneManager.searchAirplane(make + " " + model)) {
                         System.out.println("The airplane already exists.");
-                    } else {
-                        AirplaneManager.addAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate);
-                        System.out.println("Airplane added successfully!");
-                    }*/
+                    } */
+                    AirMan.addAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate);
+                    System.out.println("Airplane added successfully!");
+                    
                     break;
                 case 2:
                     // Remove an Airplane
@@ -234,7 +235,7 @@ public class sysmain {
                     fuelBurnRate = input.nextDouble();
                     input.nextLine(); // Consume newline
 
-                    //AirplaneManager.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate);
+                    AirMan.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate,3);
                     System.out.println("Airplane modified successfully!");
                     break;
                 case 4:
