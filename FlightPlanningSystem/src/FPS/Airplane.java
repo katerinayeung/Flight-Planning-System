@@ -88,7 +88,7 @@ public class Airplane implements AirplaneInterface {
         System.out.println("Cruise Speed: " + cruiseSpeed);
         System.out.println("Fuel Burnrate: " + fuelBurnrate);
     }
-
+   // Overriding the toString method to provide a human-readable representation of the Airplane object
     @Override
     public String toString() {
         return "Airplane{" +
