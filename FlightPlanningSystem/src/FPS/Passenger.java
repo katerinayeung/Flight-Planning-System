@@ -1,12 +1,15 @@
 package FPS;
+
+import java.util.List;
+
 public class Passenger {
     private String name;
-    private String destination;
+    private List<String> destinations;
     private String selectedPlane;
 
-    public Passenger(String name, String destination, String selectedPlane) {
+    public Passenger(String name, List<String> destinations, String selectedPlane) {
         this.name = name;
-        this.destination = destination;
+        this.destinations = destinations;
         this.selectedPlane = selectedPlane;
     }
 
@@ -14,16 +17,20 @@ public class Passenger {
         return name;
     }
 
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public List<String> getDestinations() {
+        return destinations;
     }
 
     public String getSelectedPlane() {
         return selectedPlane;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDestinations(List<String> destinations) {
+        this.destinations = destinations;
     }
 
     public void setSelectedPlane(String selectedPlane) {
