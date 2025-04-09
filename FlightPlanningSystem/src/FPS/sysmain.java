@@ -105,6 +105,7 @@ public class sysmain {
     }
 
     private static void manageAirportDatabase(Scanner input) {
+        AirportManager airportManager = new AirportManager(new Airports("", "", 0, 0, 0, ""));
         System.out.println("\nManaging Airport Database...");
         while (true) {
             System.out.println("\n1 Add an Airport\n2 Remove an Airport\n3 Modify an Airport\n4 Return to the menu\n5 View all Airports");
@@ -125,30 +126,30 @@ public class sysmain {
                     double longitude = input.nextDouble();
                     input.nextLine(); // Consume newline
                     System.out.print("Enter Communication Frequencies: ");
-                    String commFrequencies = input.nextLine();
+                    double commFrequencies = input.nextDouble();
                     System.out.print("Enter Fuel Types: ");
                     String fuelTypes = input.nextLine();
 
-                    /*if (AirportManager.searchAirport(icao)) {
-                        System.out.println("The airport already exists.");
-                    } else {
-                        AirportManager.addAirport(icao, name, latitude, longitude, commFrequencies, fuelTypes);
-                        System.out.println("Airport added successfully!");
-                    }*/
+                    //if (AirportManager.searchAirport(icao)) {
+                     //   System.out.println("The airport already exists.");
+                    //} else {
+                    
+                    airportManager.addAirport(icao, name, latitude, longitude, commFrequencies, fuelTypes);
+                    System.out.println("Airport added successfully!");
                     break;
                 case 2:
+                   
                     // Remove an Airport
-                    System.out.print("\nEnter the name of the airport to remove: ");
-                    String airportName = input.nextLine();
-                    /*if (AirportManager.searchAirport(airportName)) {
-                        AirportManager.removeAirport(airportName);
-                        System.out.println("Airport removed successfully!");
-                    } else {
-                        System.out.println("The airport does not exist.");
-                    }*/
+                    System.out.print("\nEnter the ICAO of the airport to remove: ");
+                    String airportIcao = input.nextLine(); // Correctly read the ICAO
+                    airportManager.removeAirport(airportIcao); // Use the correct variable
+                    System.out.println("Airport removed successfully!");
                     break;
+                   
                 case 3:
                     // Modify an Airport
+                    System.out.print("\nEnter the ICAO of the airport to modify: ");
+                    String initialIcao = input.nextLine(); 
                     System.out.print("\nEnter ICAO: ");
                     icao = input.nextLine();
                     System.out.print("Enter Name: ");
@@ -159,11 +160,11 @@ public class sysmain {
                     longitude = input.nextDouble();
                     input.nextLine(); // Consume newline
                     System.out.print("Enter Communication Frequencies: ");
-                    commFrequencies = input.nextLine();
+                    commFrequencies = input.nextDouble();
                     System.out.print("Enter Fuel Types: ");
                     fuelTypes = input.nextLine();
 
-                   // AirportManager.modifyAirport(icao, name, latitude, longitude, commFrequencies, fuelTypes);
+                   airportManager.modifyAirport(initialIcao,icao, name, latitude, longitude, commFrequencies, fuelTypes);
                     System.out.println("Airport modified successfully!");
                     break;
                 case 4:
