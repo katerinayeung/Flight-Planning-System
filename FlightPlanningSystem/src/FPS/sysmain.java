@@ -107,7 +107,7 @@ public class sysmain {
     private static void manageAirportDatabase(Scanner input) {
         System.out.println("\nManaging Airport Database...");
         while (true) {
-            System.out.println("\n1 Add an Airport\n2 Remove an Airport\n3 Modify an Airport\n4 Return to the menu");
+            System.out.println("\n1 Add an Airport\n2 Remove an Airport\n3 Modify an Airport\n4 Return to the menu\n5 View all Airports");
             System.out.print("\nEnter your choice: ");
             int choice = input.nextInt();
             input.nextLine(); // Consume newline
@@ -179,7 +179,7 @@ public class sysmain {
         AirplaneManager AirMan = new AirplaneManager(new Airplane("", "", "", 0, 0, 0));
         System.out.println("\nManaging Airplane Database...");
         while (true) {
-            System.out.println("\n1 Add an Airplane\n2 Remove an Airplane\n3 Modify an Airplane\n4 Return to the menu");
+            System.out.println("\n1 Add an Airplane\n2 Remove an Airplane\n3 Modify an Airplane\n4 View all Airplanes\n5 Return to the menu");
             System.out.print("\nEnter your choice: ");
             int choice = input.nextInt();
             input.nextLine(); // Consume newline
@@ -200,7 +200,7 @@ public class sysmain {
                     System.out.print("Enter Fuel Burn Rate: ");
                     double fuelBurnRate = input.nextDouble();
                     input.nextLine(); // Consume newline
-
+                    
                     if (AirMan.searchAirplane(make, model) != -1) {
                         System.out.println("The airplane already exists.");
                         break;
@@ -266,6 +266,10 @@ public class sysmain {
                         break;
                     
                 case 4:
+                    // View all Airplanes
+                    System.out.println("\nAll Airplanes in the Database:");
+                    AirMan.displayAllAirplanes();
+                case 5:
                     // Return to the menu
                     return;
                 default:

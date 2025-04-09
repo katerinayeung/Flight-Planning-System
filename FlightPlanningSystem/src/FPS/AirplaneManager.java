@@ -165,4 +165,24 @@ public class AirplaneManager extends Airplane {
     
         return null; // Return null if an error occurs
     }
+
+    public void displayAllAirplanes() {
+        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
+            String line;
+            int index = 0;
+    
+            // Iterate through the file line by line
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(",");
+                if (fields.length == 6) {
+                    System.out.println(fields[0] + " " + fields[1] + " " + fields[2] + " " + fields[3] + " " + fields[4] + " " + fields[5]);
+                } else {
+                    System.out.println("Invalid data format on line " + index);
+                }
+                index++; // Increment the index for each line
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
