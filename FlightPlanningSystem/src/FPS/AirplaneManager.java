@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AirplaneManager extends Airplane {
     private Airplane airplane;
@@ -32,8 +34,48 @@ public class AirplaneManager extends Airplane {
         
     }
 
-    public void removeAirplane(String make) {
-        
+   public void removeAirplane(int index) {
+    String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat";
+    List<String> airplanes = new ArrayList<>();
+
+    // Read all lines into a list
+    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            airplanes.add(line);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        return;
+    }
+
+    // Check if the index is valid
+    if (index < 0 || index >= airplanes.size()) {
+        System.out.println("Invalid index. No airplane removed.");
+        return;
+    }
+
+    // Remove the airplane at the specified index
+    if (index < airplanes.size() - 1) {
+        // Move the last airplane to the removed airplane's position
+        String lastAirplane = airplanes.remove(airplanes.size() - 1);
+        airplanes.set(index, lastAirplane);
+    } else {
+        // If it's the last airplane, just remove it
+        airplanes.remove(index);
+    }
+
+    // Rewrite the file with the updated list
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+        for (String airplane : airplanes) {
+            bw.write(airplane);
+            bw.newLine();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+    System.out.println("\nAirplane removed and list updated successfully.");
     }
 
     public static void modifyAirplane(String make, String model, String type, double fuelCapacity, double cruiseSpeed, double fuelBurnrate, int index) {
@@ -86,7 +128,7 @@ public class AirplaneManager extends Airplane {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Airplane not found in the database.");
+        System.out.println("\nAirplane not found in the database.");
         return -1; // Return -1 if no match is found
     }
 
