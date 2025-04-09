@@ -32,34 +32,35 @@ public class AirplaneManager extends Airplane {
         
     }
 
-    public void removeAirplane(Airplane airplane) {
-        // Remove airplane from database
+    public void removeAirplane(String make) {
+        
     }
 
     public static void modifyAirplane(String make, String model, String type, double fuelCapacity, double cruiseSpeed, double fuelBurnrate, int index) {
-        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
-            String line = null;
+        String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat";
+        StringBuilder updatedContent = new StringBuilder();
     
-            // Skip lines until the desired index
-            for (int i = 0; i <= index; i++) {
-                line = br.readLine();
-                if (line == null) {
-                    throw new IOException("Reached end of file before finding the specified line.");
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int currentIndex = 0;
+    
+            // Read the file line by line
+            while ((line = br.readLine()) != null) {
+                if (currentIndex == index) {
+                    // Modify the specific line
+                    line = make + "," + model + "," + type + "," + fuelCapacity + "," + cruiseSpeed + "," + fuelBurnrate;
                 }
+                updatedContent.append(line).append(System.lineSeparator());
+                currentIndex++;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
     
-            // Process the specific line
-            String[] fields = line.split(",");
-            if (fields.length == 6) {
-                fields[0] = make;
-                fields[1] = model;
-                fields[2] = type;
-                fields[3] = String.valueOf(fuelCapacity);
-                fields[4] = String.valueOf(cruiseSpeed);
-                fields[5] = String.valueOf(fuelBurnrate);
-            } else {
-                throw new IOException("Invalid data format on the specified line.");
-            }
+        // Write the updated content back to the file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            bw.write(updatedContent.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
