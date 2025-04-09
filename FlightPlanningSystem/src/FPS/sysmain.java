@@ -101,7 +101,7 @@ public class sysmain {
         System.out.println("Passenger Name: " + user.getName());
         System.out.println("Departure Airport: " + flightPlan.getDepartureAirport());
         System.out.println("Arrival Airports: " + String.join(", ", arrivalAirports));
-        //System.out.println("Selected Plane: " + selectedPlane);
+       //System.out.println("Selected Plane: " + selectedPlane);
     }
 
     private static void manageAirportDatabase(Scanner input) {
@@ -202,43 +202,70 @@ public class sysmain {
                     double fuelBurnRate = input.nextDouble();
                     input.nextLine(); // Consume newline
 
-                    /*if (AirplaneManager.searchAirplane(make + " " + model)) {
+                    if (AirMan.searchAirplane(make, model) != -1) {
                         System.out.println("The airplane already exists.");
-                    } */
-                    AirMan.addAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate);
-                    System.out.println("Airplane added successfully!");
-                    
-                    break;
+                        break;
+                    } 
+                    else {
+                        AirMan.addAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate);
+                        System.out.println("Airplane added successfully!");
+                        break; 
+                    }
+
                 case 2:
                     // Remove an Airplane
-                    System.out.print("\nEnter the name of the airplane to remove: ");
-                    String airplaneName = input.nextLine();
-                    /*if (AirplaneManager.searchAirplane(airplaneName)) {
-                        AirplaneManager.removeAirplane(airplaneName);
-                        System.out.println("Airplane removed successfully!");
-                    } else {
-                        System.out.println("The airplane does not exist.");
-                    }*/
-                    break;
-                case 3:
-                    // Modify an Airplane
-                    System.out.print("\nEnter Make: ");
-                    make = input.nextLine();
-                    System.out.print("Enter Model: ");
-                    model = input.nextLine();
-                    System.out.print("Enter Type: ");
-                    type = input.nextLine();
-                    System.out.print("Enter Fuel Capacity: ");
-                    fuelCapacity = input.nextDouble();
-                    System.out.print("Enter Cruise Speed: ");
-                    cruiseSpeed = input.nextDouble();
-                    System.out.print("Enter Fuel Burn Rate: ");
-                    fuelBurnRate = input.nextDouble();
-                    input.nextLine(); // Consume newline
+                    System.out.print("\nEnter the make of the airplane to remove: ");
+                    String airplaneMake = input.nextLine();
+                    System.out.print("Enter the model of the airplane to remove: ");
+                    String airplaneModel = input.nextLine();
+                    int index = AirMan.searchAirplane(airplaneMake, airplaneModel);
+                    AirMan.removeAirplane(index);
 
-                    AirMan.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate,3);
-                    System.out.println("Airplane modified successfully!");
                     break;
+                case 3: 
+                    int indexToModify = -1;
+                    while (true) {
+                        System.out.println("\nEnter the make and model of the airplane to modify (or enter 'x' twice to cancel): ");
+                        System.out.print("\nEnter make: ");
+                        String airplaneMakeToModify = input.nextLine();
+                        System.out.print("Enter model: ");
+                        String airplaneModelToModify = input.nextLine();
+                        if (airplaneMakeToModify.equals("x") && airplaneModelToModify.equals("x")) {
+                            System.out.println("exiting");
+                            break;
+                        }
+                        indexToModify = AirMan.searchAirplane(airplaneMakeToModify, airplaneModelToModify);
+                        if (indexToModify == -1) {
+                            System.out.println("The airplane does not exist. Please try again.");
+                        }
+                        else {
+                            System.out.println("Airplane found!");
+                            break;
+                        }
+
+                    }
+                    if (indexToModify == -1) break;
+                    
+                        // Modify an Airplane
+                        
+                        System.out.print("\nEnter Make: ");
+                        make = input.nextLine();
+                        System.out.print("Enter Model: ");
+                        model = input.nextLine();
+                        System.out.print("Enter Type: ");
+                        type = input.nextLine();
+                        System.out.print("Enter Fuel Capacity: ");
+                        fuelCapacity = input.nextDouble();
+                        System.out.print("Enter Cruise Speed: ");
+                        cruiseSpeed = input.nextDouble();
+                        System.out.print("Enter Fuel Burn Rate: ");
+                        fuelBurnRate = input.nextDouble();
+                        input.nextLine(); // Consume newline
+
+                        AirMan.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate, indexToModify);
+                        System.out.println("Airplane modified successfully!");
+                        break;
+                    
                 case 4:
                     // Return to the menu
                     return;
