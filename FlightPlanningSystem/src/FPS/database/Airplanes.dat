@@ -6,8 +6,9 @@ Boeing,737,Jet,15921.442,3690.78,500
 Boeing,B52,Jet,181000,415,12491
 Boeing,C17,Jet,102614,460,11860.29
 Boeing,F18,Jet,6200,495,4164
-Bombardier,GLEX,24333,490,2020
+Bombardier,GLEX,Jet,24333,490,2020
 Embraer,E55P,Jet,3037,450,694
-Fairchild-Dornier,A10,5110,300,3401
 Northrop,B2,Jet,207000,450,9983
 Pilatus,PC12,Turboprop,1520,270,208
+test1,test1,Jet,0.0,0.0,0.0
+asd,asd,asd,0.0,0.0,0.0

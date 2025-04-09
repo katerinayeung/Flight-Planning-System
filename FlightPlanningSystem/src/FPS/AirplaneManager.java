@@ -170,12 +170,24 @@ public class AirplaneManager extends Airplane {
         try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
             String line;
             int index = 0;
-    
+
+            // Print table header
+            System.out.printf("%-5s %-15s %-15s %-10s %-15s %-15s %-15s%n", "Index", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
+            System.out.println("-----------------------------------------------------------------------------------------------");
+
             // Iterate through the file line by line
             while ((line = br.readLine()) != null) {
                 String[] fields = line.split(",");
                 if (fields.length == 6) {
-                    System.out.println(fields[0] + " " + fields[1] + " " + fields[2] + " " + fields[3] + " " + fields[4] + " " + fields[5]);
+                    System.out.printf("%-5d %-15s %-15s %-10s %-15s %-20s %-15s%n",
+                            index,
+                            fields[0], // Make
+                            fields[1], // Model
+                            fields[2], // Type
+                            fields[3], // Fuel Capacity
+                            fields[4], // Cruise Speed
+                            fields[5]  // Fuel Burn Rate
+                    );
                 } else {
                     System.out.println("Invalid data format on line " + index);
                 }
