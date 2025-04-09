@@ -118,17 +118,42 @@ public class sysmain {
                     // Add an Airport
                     System.out.print("\nEnter ICAO: ");
                     String icao = input.nextLine();
+                    if (icao == null || icao.isEmpty() || icao.length() != 4) {
+                        System.err.println("\nInvalid ICAO code. It must be a non-empty string of 4 characters.");
+                        break;
+                    }
                     System.out.print("Enter Name: ");
                     String name = input.nextLine();
+                    if (name == null || name.isEmpty()) {
+                        System.err.println("\nInvalid airport name. It must be a non-empty string.");
+                        break;
+                    }
                     System.out.print("Enter Latitude: ");
                     double latitude = input.nextDouble();
+                    if (latitude < -90 || latitude > 90) {
+                        System.err.println("\nInvalid latitude. It must be between -90 and 90.");
+                        break;
+                    }
                     System.out.print("Enter Longitude: ");
                     double longitude = input.nextDouble();
+                    if (longitude < -180 || longitude > 180) {
+                        System.err.println("\nInvalid longitude. It must be between -180 and 180.");
+                        break;
+                    }
                     input.nextLine(); // Consume newline
                     System.out.print("Enter Communication Frequencies: ");
                     double commFrequencies = input.nextDouble();
+                    if (commFrequencies < 0) {
+                        System.err.println("\nInvalid communication frequencies. It must be a non-negative value.");
+                        break;
+                    }
+                    input.nextLine(); // Consume newline
                     System.out.print("Enter Fuel Types: ");
                     String fuelTypes = input.nextLine();
+                    if (fuelTypes == null || fuelTypes.isEmpty()) {
+                        System.err.println("\nInvalid fuel types. It must be a non-empty string.");
+                        break;
+                    }
 
                     //if (AirportManager.searchAirport(icao)) {
                      //   System.out.println("The airport already exists.");
@@ -147,24 +172,68 @@ public class sysmain {
                     break;
                    
                 case 3:
-                    // Modify an Airport
-                    System.out.print("\nEnter the ICAO of the airport to modify: ");
-                    String initialIcao = input.nextLine(); 
-                    System.out.print("\nEnter ICAO: ");
-                    icao = input.nextLine();
-                    System.out.print("Enter Name: ");
-                    name = input.nextLine();
-                    System.out.print("Enter Latitude: ");
-                    latitude = input.nextDouble();
-                    System.out.print("Enter Longitude: ");
-                    longitude = input.nextDouble();
-                    input.nextLine(); // Consume newline
-                    System.out.print("Enter Communication Frequencies: ");
-                    commFrequencies = input.nextDouble();
-                    System.out.print("Enter Fuel Types: ");
-                    fuelTypes = input.nextLine();
+                    // Modify an Airport 
+                    int APindexToModify = -1;
+                    while (true) {
+                        System.out.println("\nEnter the icao of the airport to modify (or enter 'x' to cancel): ");
+                        System.out.print("Enter icao: ");
+                        String IcaoToModify = input.nextLine();
+                        if (IcaoToModify.equals("x")) {
+                            System.out.println("exiting...");
+                            break;
+                        }
+                        APindexToModify = airportManager.searchAirport(IcaoToModify);
+                        if (APindexToModify == -1) {
+                            System.out.println("The airport does not exist. Please try again.");
+                        }
+                        else {
+                            System.out.println("Airport found!");
+                            break;
+                        }
 
-                   airportManager.modifyAirport(initialIcao,icao, name, latitude, longitude, commFrequencies, fuelTypes);
+                    }
+                    if (APindexToModify == -1) break;
+                    // Modify an Airplane
+                        System.out.print("\nEnter ICAO: ");
+                        icao = input.nextLine();
+                        if (icao == null || icao.isEmpty() || icao.length() != 4) {
+                            System.err.println("Invalid ICAO code. It must be a non-empty string of 4 characters.");
+                            break;
+                        }
+                        System.out.print("Enter Name: ");
+                        name = input.nextLine();
+                        if (name == null || name.isEmpty()) {
+                            System.err.println("Invalid airport name. It must be a non-empty string.");
+                            break;
+                        }
+                        System.out.print("Enter Latitude: ");
+                        latitude = input.nextDouble();
+                        if (latitude < -90 || latitude > 90) {
+                            System.err.println("Invalid latitude. It must be between -90 and 90.");
+                            break;
+                        }
+                        System.out.print("Enter Longitude: ");
+                        longitude = input.nextDouble();
+                        if (longitude < -180 || longitude > 180) {
+                            System.err.println("Invalid longitude. It must be between -180 and 180.");
+                            break;
+                        }
+                        input.nextLine(); // Consume newline
+                        System.out.print("Enter Communication Frequencies: ");
+                        commFrequencies = input.nextDouble();
+                        input.nextLine(); // Consume newline
+                        if (commFrequencies < 0) {
+                            System.err.println("Invalid communication frequencies. It must be a non-negative value.");
+                            break;
+                        }
+                        System.out.print("Enter Fuel Types: ");
+                        fuelTypes = input.nextLine();
+                        if (fuelTypes == null || fuelTypes.isEmpty()) {
+                            System.err.println("Invalid fuel types. It must be a non-empty string.");
+                            break;
+                        }
+
+                   airportManager.modifyAirport(icao, name, latitude, longitude, commFrequencies, fuelTypes, APindexToModify);
                     System.out.println("Airport modified successfully!");
                     break;
                 case 4:
