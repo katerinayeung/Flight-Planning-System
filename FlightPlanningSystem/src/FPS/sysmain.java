@@ -186,7 +186,7 @@ public class sysmain {
         AirportManager airportManager = new AirportManager(new Airport("", "", 0, 0, 0, ""));
         System.out.println("\nManaging Airport Database...");
         while (true) {
-            System.out.println("\n1 Add an Airport\n2 Remove an Airport\n3 Modify an Airport\n4 View all Airports\n5 Return to the menu");
+            System.out.println("\n1 Add an Airport\n2 Remove an Airport\n3 Modify an Airport\n4 View Single Airport\n5 View all Airports\n6 Return to the menu");
             System.out.print("\nEnter your choice: ");
             int choice = input.nextInt();
             input.nextLine(); // Consume newline
@@ -325,11 +325,26 @@ public class sysmain {
                     System.out.println("Airport modified successfully!");
                     break;
                 case 4:
+                    // View single Airport
+                    System.out.print("\nEnter the ICAO of the airport to view: ");
+                    String airportIcaoToView = input.nextLine();
+                    if (airportIcaoToView == null || airportIcaoToView.isEmpty() || airportIcaoToView.length() != 4) {
+                        System.err.println("\nInvalid ICAO code. It must be a non-empty string of 4 characters.");
+                        break;
+                    }
+                    int airportIndex = airportManager.searchAirport(airportIcaoToView);
+                    if (airportIndex == -1) {
+                        System.out.println("The airport does not exist. Please try again.");
+                        break;
+                    }
+                    airportManager.displayAirport(airportIndex);
+                    break;
+                case 5:
                     // View all Airports
                     System.out.println("\nAll Airports in the Database:");
                     airportManager.displayAllAirports();
                     break;
-                case 5:
+                case 6:
                     // Return to the menu
                     return;
                 default:
@@ -344,7 +359,7 @@ public class sysmain {
         System.out.println("\nManaging Airplane Database...");
         // Airplane Manager Menu
         while (true) {
-            System.out.println("\n1 Add an Airplane\n2 Remove an Airplane\n3 Modify an Airplane\n4 View all Airplanes\n5 Return to the menu");
+            System.out.println("\n1 Add an Airplane\n2 Remove an Airplane\n3 Modify an Airplane\n4 View single Airplanes\n5 View all Airplanes\n6 Return to the menu");
             System.out.print("\nEnter your choice: ");
             String choice = input.nextLine();
 
@@ -513,10 +528,30 @@ public class sysmain {
                         break;
                     
                 case "4":
+                    //View singel Airplane
+                    System.out.print("\nEnter the make and model of the airplane to view (e.g., 'Boeing 747'): ");
+                    String airplaneInput = input.nextLine();
+                    String[] airplaneParts = airplaneInput.split(" ", 2);
+                    if (airplaneParts.length < 2) {
+                        System.out.println("Invalid airplane input. Returning to the menu.");
+                        break;
+                    }
+                    String airplaneMakeToView = airplaneParts[0];
+                    String airplaneModelToView = airplaneParts[1];
+                    int airplaneIndex = AirMan.searchAirplane(airplaneMakeToView, airplaneModelToView);
+                    if (airplaneIndex == -1) {
+                        System.out.println("The airplane does not exist. Please try again.");
+                        break;
+                    }
+                    AirMan.displayAirplane(airplaneIndex);
+                    break;
+                    
+                case "5":
                     // View all Airplanes
                     System.out.println("\nAll Airplanes in the Database:");
                     AirMan.displayAllAirplanes();
-                case "5":
+                    break;
+                case "6":
                     // Return to the menu
                     return;
                 default:

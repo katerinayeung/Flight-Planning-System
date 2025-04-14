@@ -212,7 +212,33 @@ public void removeAirport(int index) {
         }
         return airports;
     }
+    // Display a specific airport by index
+    public void displayAirport(int index) {
+        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat"))) {
+            String line;
+            int currentIndex = 0;
+
+            // Read the file line by line
+            while ((line = br.readLine()) != null) {
+                if (currentIndex == index) {
+                    String[] fields = line.split(",");
+                    if (fields.length == 6) {
+                        System.out.println("Icao: " + fields[0]);
+                        System.out.println("Name: " + fields[1]);
+                        System.out.println("Laditude: " + fields[2]);
+                        System.out.println("Longitude: " + fields[3]);
+                        System.out.println("Comm Frequency: " + fields[4]);
+                        System.out.println("Fuel Types: " + fields[5]);
+                    }
+                }
+                currentIndex++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
 
 
 

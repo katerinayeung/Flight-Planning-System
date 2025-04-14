@@ -69,7 +69,7 @@ public class AirplaneManager extends Airplane {
 
     // Check if the index is valid
     if (index < 0 || index >= airplanes.size()) {
-        System.out.println("Invalid index. No airplane removed.");
+        System.out.println("\n This plane does not exist.");
         return;
     }
 
@@ -209,6 +209,31 @@ public class AirplaneManager extends Airplane {
                     System.out.println("Invalid data format on line " + index);
                 }
                 index++; // Increment the index for each line
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //Display a single airplane
+    public void displayAirplane(int index) {
+        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
+            String line;
+            int currentIndex = 0;
+
+            // Read the file line by line
+            while ((line = br.readLine()) != null) {
+                if (currentIndex == index) {
+                    String[] fields = line.split(",");
+                    if (fields.length == 6) {
+                        System.out.println("Make: " + fields[0]);
+                        System.out.println("Model: " + fields[1]);
+                        System.out.println("Type: " + fields[2]);
+                        System.out.println("Fuel Capacity: " + fields[3]);
+                        System.out.println("Cruise Speed: " + fields[4]);
+                        System.out.println("Fuel Burn Rate: " + fields[5]);
+                    }
+                }
+                currentIndex++;
             }
         } catch (IOException e) {
             e.printStackTrace();
