@@ -216,7 +216,7 @@ public class AirplaneManager extends Airplane {
             int index = 0;
     
             // Print table header
-            System.out.printf("%-5s %-15s %-15s %-10s %-15s %-15s %-15s%n", "Index", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
+            System.out.printf("%-15s %-15s %-10s %-15s %-15s %-15s%n", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
             System.out.println("-----------------------------------------------------------------------------------------------");
     
             // Iterate through the file line by line
@@ -228,8 +228,7 @@ public class AirplaneManager extends Airplane {
     
                 String[] fields = line.split(",");
                 if (fields.length == 6) {
-                    System.out.printf("%-5d %-15s %-15s %-10s %-15s %-20s %-15s%n",
-                            index,
+                    System.out.printf("%-15s %-15s %-10s %-15s %-20s %-15s%n",
                             fields[0], // Make
                             fields[1], // Model
                             fields[2], // Type
@@ -253,7 +252,7 @@ public void displayAirplane(int index) {
         int currentIndex = 0;
 
         // Print table header
-        System.out.printf("%-5s %-15s %-15s %-10s %-15s %-15s %-15s%n", "Index", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
+        System.out.printf("%-15s %-15s %-10s %-15s %-15s %-15s%n", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
         System.out.println("-----------------------------------------------------------------------------------------------");
 
         // Read the file line by line
@@ -267,8 +266,7 @@ public void displayAirplane(int index) {
 
                 String[] fields = line.split(",");
                 if (fields.length == 6) {
-                    System.out.printf("%-5d %-15s %-15s %-10s %-15s %-20s %-15s%n",
-                            currentIndex,
+                    System.out.printf("%-15s %-15s %-10s %-15s %-20s %-15s%n",
                             fields[0], // Make
                             fields[1], // Model
                             fields[2], // Type
