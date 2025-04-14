@@ -306,225 +306,216 @@ public class sysmain {
     private static void manageAirplaneDatabase(Scanner input) {
         // Initializes Airplane Manager
         AirplaneManager AirMan = new AirplaneManager(new Airplane("", "", "", 0, 0, 0));
-        System.out.println("\nManaging Airplane Database...");
         // Airplane Manager Menu
         while (true) {
-            System.out.println("\n1 Add an Airplane\n2 Remove an Airplane\n3 Modify an Airplane\n4 View single Airplanes\n5 View all Airplanes\n6 Return to the menu");
+            System.out.println("\n--- Managing Airplane Database ---");
+            System.out.println("\n1. Add an Airplane");
+            System.out.println("2. Remove an Airplane");
+            System.out.println("3. Modify an Airplane");
+            System.out.println("4. View a Single Airplane");
+            System.out.println("5. View All Airplanes");
+            System.out.println("6. Return to the Main Menu");
             System.out.print("\nEnter your choice: ");
             String choice = input.nextLine();
 
             switch (choice) {
                 case "1":
                     // Add an Airplane
+                    System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
                     while (true) {
-                        System.out.print("\nEnter Make (or type 'cancel' to return to the menu): ");
+                        System.out.print("\nEnter the make of the airplane: ");
                         String make = input.nextLine();
                         if (make.equalsIgnoreCase("cancel")) {
-                            System.out.println("Returning to the menu...");
+                            System.out.println("\nReturning to the Airplane Database menu...");
                             break;
-                        }
-                        // Validate Make
-                        if (make == null || make.isEmpty()) {
-                            System.out.println("Invalid make. Please try again.");
-                            continue; // Restart the loop
                         }
 
-                        System.out.print("Enter Model (or type 'cancel' to return to the menu): ");
+                        System.out.print("Enter the model of the airplane: ");
                         String model = input.nextLine();
                         if (model.equalsIgnoreCase("cancel")) {
-                            System.out.println("Returning to the menu...");
+                            System.out.println("\nReturning to the Airplane Database menu...");
                             break;
-                        }
-                        // Validate Model
-                        if (model == null || model.isEmpty()) {
-                            System.out.println("Invalid model. Please try again.");
-                            continue; // Restart the loop
-                        }
-                        //Check if the plane already exists
-                        if (AirMan.searchAirplane(make, model) != -1) {
-                            System.out.println("The airplane already exists. Please try again.");
-                            continue; // Restart the loop
                         }
 
                         // Validate the type
                         String type;
                         while (true) {
-                            System.out.print("Enter Type (Jet, Prop, or Turboprop) (or type 'cancel' to return to the menu): ");
+                            System.out.print("Enter the type of the airplane (Jet, Prop, or Turboprop): ");
                             type = input.nextLine();
                             if (type.equalsIgnoreCase("cancel")) {
-                                System.out.println("Returning to the menu...");
-                                return; // Exit the function
+                                System.out.println("\nReturning to the Airplane Database menu...");
+                                break;
                             }
                             if (type.equalsIgnoreCase("Jet") || type.equalsIgnoreCase("Prop") || type.equalsIgnoreCase("Turboprop")) {
                                 break; // Valid type
                             } else {
-                                System.out.println("Invalid type. Please enter 'Jet', 'Prop', or 'Turboprop'.");
+                                System.out.println("*** Invalid type. Please enter 'Jet', 'Prop', or 'Turboprop'.");
                             }
                         }
+                        if (type.equalsIgnoreCase("cancel")) break;
 
-                        double fuelCapacity = 0;
-                        double cruiseSpeed = 0;
-                        double fuelBurnRate = 0;
+                        double fuelCapacity = 0, cruiseSpeed = 0, fuelBurnRate = 0;
 
                         // Validate Fuel Capacity
                         while (true) {
                             try {
-                                System.out.print("Enter Fuel Capacity (or type 'cancel' to return to the menu): ");
+                                System.out.print("Enter the fuel capacity of the airplane: ");
                                 String inputFuelCapacity = input.nextLine();
                                 if (inputFuelCapacity.equalsIgnoreCase("cancel")) {
-                                    System.out.println("Returning to the menu...");
-                                    return; // Exit the function
+                                    System.out.println("\nReturning to the Airplane Database menu...");
+                                    break;
                                 }
                                 fuelCapacity = Double.parseDouble(inputFuelCapacity);
                                 if (fuelCapacity < 0) {
-                                    System.out.println("Fuel Capacity cannot be negative. Please try again.");
+                                    System.out.println("*** Fuel capacity cannot be negative. Please try again.");
                                     continue;
                                 }
                                 break; // Valid input
                             } catch (NumberFormatException e) {
-                                System.out.println("Invalid input. Please enter a numeric value for Fuel Capacity.");
+                                System.out.println("*** Invalid input. Please enter a numeric value for fuel capacity.");
                             }
                         }
+                        if (fuelCapacity == 0) break;
 
                         // Validate Cruise Speed
                         while (true) {
                             try {
-                                System.out.print("Enter Cruise Speed (or type 'cancel' to return to the menu): ");
+                                System.out.print("Enter the cruise speed of the airplane: ");
                                 String inputCruiseSpeed = input.nextLine();
                                 if (inputCruiseSpeed.equalsIgnoreCase("cancel")) {
-                                    System.out.println("Returning to the menu...");
-                                    return; // Exit the function
+                                    System.out.println("\nReturning to the Airplane Database menu...");
+                                    break;
                                 }
                                 cruiseSpeed = Double.parseDouble(inputCruiseSpeed);
                                 if (cruiseSpeed < 0) {
-                                    System.out.println("Cruise Speed cannot be negative. Please try again.");
+                                    System.out.println("*** Cruise speed cannot be negative. Please try again.");
                                     continue;
                                 }
                                 break; // Valid input
                             } catch (NumberFormatException e) {
-                                System.out.println("Invalid input. Please enter a numeric value for Cruise Speed.");
+                                System.out.println("*** Invalid input. Please enter a numeric value for cruise speed.");
                             }
                         }
+                        if (cruiseSpeed == 0) break;
 
                         // Validate Fuel Burn Rate
                         while (true) {
                             try {
-                                System.out.print("Enter Fuel Burn Rate (or type 'cancel' to return to the menu): ");
+                                System.out.print("Enter the fuel burn rate of the airplane: ");
                                 String inputFuelBurnRate = input.nextLine();
                                 if (inputFuelBurnRate.equalsIgnoreCase("cancel")) {
-                                    System.out.println("Returning to the menu...");
-                                    return; // Exit the function
+                                    System.out.println("\nReturning to the Airplane Database menu...");
+                                    break;
                                 }
                                 fuelBurnRate = Double.parseDouble(inputFuelBurnRate);
                                 if (fuelBurnRate < 0) {
-                                    System.out.println("Fuel Burn Rate cannot be negative. Please try again.");
+                                    System.out.println("*** Fuel burn rate cannot be negative. Please try again.");
                                     continue;
                                 }
                                 break; // Valid input
                             } catch (NumberFormatException e) {
-                                System.out.println("Invalid input. Please enter a numeric value for Fuel Burn Rate.");
+                                System.out.println("*** Invalid input. Please enter a numeric value for fuel burn rate.");
                             }
                         }
+                        if (fuelBurnRate == 0) break;
 
                         // Check if the airplane already exists
                         if (AirMan.searchAirplane(make, model) != -1) {
-                            System.out.println("The airplane already exists. Please try again.");
+                            System.out.println("The airplane already exists in the database. Please try again.");
                             continue; // Restart the loop
                         }
 
                         // Add the airplane to the database
                         AirMan.addAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate);
-                        System.out.println("Airplane added successfully!");
                         break; // Exit the loop after successful addition
                     }
                     break;
 
                 case "2":
                     // Remove an Airplane
+                    System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
                     while (true) {
-                        System.out.print("\nEnter the make of the airplane to remove (or type 'cancel' to return to the menu): ");
+                        System.out.print("\nEnter the make of the airplane to remove: ");
                         String airplaneMake = input.nextLine();
                         if (airplaneMake.equalsIgnoreCase("cancel")) {
-                            System.out.println("Returning to the menu...");
+                            System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
 
-                        System.out.print("Enter the model of the airplane to remove (or type 'cancel' to return to the menu): ");
+                        System.out.print("Enter the model of the airplane to remove: ");
                         String airplaneModel = input.nextLine();
                         if (airplaneModel.equalsIgnoreCase("cancel")) {
-                            System.out.println("Returning to the menu...");
+                            System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
 
                         int index = AirMan.searchAirplane(airplaneMake, airplaneModel);
                         if (index == -1) {
-                            System.out.println("The airplane does not exist. Please try again.");
+                            System.out.println("The airplane does not exist in the database. Please try again.");
                             continue;
                         }
 
                         AirMan.removeAirplane(index);
-                        System.out.println("Airplane removed successfully!");
                         break;
                     }
                     break;
 
                 case "3":
                     // Modify an Airplane
+                    System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
                     int indexToModify = -1;
                     while (true) {
-                        System.out.println("\nEnter the make and model of the airplane to modify (or type 'cancel' to return to the menu): ");
-                        System.out.print("Enter make: ");
+                        System.out.print("\nEnter the make of the airplane to modify: ");
                         String airplaneMakeToModify = input.nextLine();
                         if (airplaneMakeToModify.equalsIgnoreCase("cancel")) {
-                            System.out.println("Returning to the menu...");
+                            System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
 
-                        System.out.print("Enter model: ");
+                        System.out.print("Enter the model of the airplane to modify: ");
                         String airplaneModelToModify = input.nextLine();
                         if (airplaneModelToModify.equalsIgnoreCase("cancel")) {
-                            System.out.println("Returning to the menu...");
+                            System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
 
                         indexToModify = AirMan.searchAirplane(airplaneMakeToModify, airplaneModelToModify);
                         if (indexToModify == -1) {
-                            System.out.println("The airplane does not exist. Please try again.");
+                            System.out.println("The airplane does not exist in the database. Please try again.");
                         } else {
                             System.out.println("Airplane found!");
                             break;
                         }
                     }
-
                     if (indexToModify == -1) break;
 
                     // Modify the airplane
-                    System.out.print("\nEnter Make (or type 'cancel' to return to the menu): ");
+                    System.out.print("\nEnter the new make of the airplane: ");
                     String make = input.nextLine();
                     if (make.equalsIgnoreCase("cancel")) {
-                        System.out.println("Returning to the menu...");
+                        System.out.println("\nReturning to the Airplane Database menu...");
                         break;
                     }
 
-                    System.out.print("Enter Model (or type 'cancel' to return to the menu): ");
+                    System.out.print("Enter the new model of the airplane: ");
                     String model = input.nextLine();
                     if (model.equalsIgnoreCase("cancel")) {
-                        System.out.println("Returning to the menu...");
+                        System.out.println("\nReturning to the Airplane Database menu...");
                         break;
                     }
 
                     String type;
                     while (true) {
-                        System.out.print("Enter Type (Jet, Prop, or Turboprop) (or type 'cancel' to return to the menu): ");
+                        System.out.print("Enter the new type of the airplane (Jet, Prop, or Turboprop): ");
                         type = input.nextLine();
                         if (type.equalsIgnoreCase("cancel")) {
-                            System.out.println("Returning to the menu...");
+                            System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
                         if (type.equalsIgnoreCase("Jet") || type.equalsIgnoreCase("Prop") || type.equalsIgnoreCase("Turboprop")) {
                             break; // Valid type
                         } else {
-                            System.out.println("Invalid type. Please enter 'Jet', 'Prop', or 'Turboprop'.");
+                            System.out.println("*** Invalid type. Please enter 'Jet', 'Prop', or 'Turboprop'.");
                         }
                     }
                     if (type.equalsIgnoreCase("cancel")) break;
@@ -534,20 +525,20 @@ public class sysmain {
                     // Validate Fuel Capacity
                     while (true) {
                         try {
-                            System.out.print("Enter Fuel Capacity (or type 'cancel' to return to the menu): ");
+                            System.out.print("Enter the new fuel capacity of the airplane: ");
                             String inputFuelCapacity = input.nextLine();
                             if (inputFuelCapacity.equalsIgnoreCase("cancel")) {
-                                System.out.println("Returning to the menu...");
+                                System.out.println("\nReturning to the Airplane Database menu...");
                                 break;
                             }
                             fuelCapacity = Double.parseDouble(inputFuelCapacity);
                             if (fuelCapacity < 0) {
-                                System.out.println("Fuel Capacity cannot be negative. Please try again.");
+                                System.out.println("*** Fuel capacity cannot be negative. Please try again.");
                                 continue;
                             }
-                            break; // Valid input
+                            break;
                         } catch (NumberFormatException e) {
-                            System.out.println("Invalid input. Please enter a numeric value for Fuel Capacity.");
+                            System.out.println("*** Invalid input. Please enter a numeric value for fuel capacity.");
                         }
                     }
                     if (fuelCapacity == 0) break;
@@ -555,20 +546,20 @@ public class sysmain {
                     // Validate Cruise Speed
                     while (true) {
                         try {
-                            System.out.print("Enter Cruise Speed (or type 'cancel' to return to the menu): ");
+                            System.out.print("Enter the new cruise speed of the airplane: ");
                             String inputCruiseSpeed = input.nextLine();
                             if (inputCruiseSpeed.equalsIgnoreCase("cancel")) {
-                                System.out.println("Returning to the menu...");
+                                System.out.println("\nReturning to the Airplane Database menu...");
                                 break;
                             }
                             cruiseSpeed = Double.parseDouble(inputCruiseSpeed);
                             if (cruiseSpeed < 0) {
-                                System.out.println("Cruise Speed cannot be negative. Please try again.");
+                                System.out.println("*** Cruise speed cannot be negative. Please try again.");
                                 continue;
                             }
-                            break; // Valid input
+                            break;
                         } catch (NumberFormatException e) {
-                            System.out.println("Invalid input. Please enter a numeric value for Cruise Speed.");
+                            System.out.println("*** Invalid input. Please enter a numeric value for cruise speed.");
                         }
                     }
                     if (cruiseSpeed == 0) break;
@@ -576,33 +567,37 @@ public class sysmain {
                     // Validate Fuel Burn Rate
                     while (true) {
                         try {
-                            System.out.print("Enter Fuel Burn Rate (or type 'cancel' to return to the menu): ");
+                            System.out.print("Enter the new fuel burn rate of the airplane: ");
                             String inputFuelBurnRate = input.nextLine();
                             if (inputFuelBurnRate.equalsIgnoreCase("cancel")) {
-                                System.out.println("Returning to the menu...");
+                                System.out.println("\nReturning to the Airplane Database menu...");
                                 break;
                             }
                             fuelBurnRate = Double.parseDouble(inputFuelBurnRate);
                             if (fuelBurnRate < 0) {
-                                System.out.println("Fuel Burn Rate cannot be negative. Please try again.");
+                                System.out.println("*** Fuel burn rate cannot be negative. Please try again.");
                                 continue;
                             }
-                            break; // Valid input
+                            break;
                         } catch (NumberFormatException e) {
-                            System.out.println("Invalid input. Please enter a numeric value for Fuel Burn Rate.");
+                            System.out.println("*** Invalid input. Please enter a numeric value for fuel burn rate.");
                         }
                     }
                     if (fuelBurnRate == 0) break;
 
                     // Modify the airplane
                     AirMan.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate, indexToModify);
-                    System.out.println("Airplane modified successfully!");
                     break;
 
                 case "4":
-                    //View singel Airplane
+                    // View a Single Airplane
+                    System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
                     System.out.print("\nEnter the make and model of the airplane to view (e.g., 'Boeing 747'): ");
                     String airplaneInput = input.nextLine();
+                    if (airplaneInput.equalsIgnoreCase("cancel")) {
+                        System.out.println("\nReturning to the Airplane Database menu...");
+                        break;
+                    }
                     String[] airplaneParts = airplaneInput.split(" ", 2);
                     if (airplaneParts.length < 2) {
                         System.out.println("Invalid airplane input. Returning to the menu.");
@@ -617,18 +612,21 @@ public class sysmain {
                     }
                     AirMan.displayAirplane(airplaneIndex);
                     break;
-                    
+
                 case "5":
-                    // View all Airplanes
-                    System.out.println("\nAll Airplanes in the Database:");
+                    // View All Airplanes
+                    System.out.println("\n--- All Airplanes in the Database ---");
                     AirMan.displayAllAirplanes();
+                    System.out.println("\nReturning to the Airplane Database menu...");
                     break;
+
                 case "6":
-                    // Return to the menu
+                    // Return to the Main Menu
+                    System.out.println("Returning to the Main Menu...");
                     return;
 
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Invalid choice. Please enter a valid option.");
             }
         }
     }
