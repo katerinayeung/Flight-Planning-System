@@ -45,41 +45,50 @@ public class Flight {
     }
 
     // Determine layovers needed and populate layovers list
-    public List<Airport> determineLayovers(List<Airport> allAirports) throws Exception {
+    public List<Airport> determineLayovers(List<Airport> mandatoryStops) throws Exception {
         Airport currentAirport = start;
-        double remainingDistance = calculateDistance(start, end);
-        totalDistance = remainingDistance;
+        totalDistance = 0.0; // Reset total distance
 
-        while (remainingDistance > airplane.calculateRange()) {
-            // Get all airports within the airplane's range
-            List<Airport> possibleStops = new ArrayList<>();
-            for (Airport airport : allAirports) {
-                if (!airport.equals(currentAirport) &&
-                    hasCorrectFuel(airport, airplane.getType()) &&
-                    calculateDistance(currentAirport, airport) <= airplane.calculateRange()) {
-                    possibleStops.add(airport);
+        for (Airport destination : mandatoryStops) {
+            double remainingDistance = calculateDistance(currentAirport, destination);
+
+            while (remainingDistance > airplane.calculateRange()) {
+                // Get all airports within the airplane's range
+                List<Airport> possibleStops = new ArrayList<>();
+                for (Airport airport : mandatoryStops) {
+                    if (!airport.equals(currentAirport) &&
+                        hasCorrectFuel(airport, airplane.getType()) &&
+                        calculateDistance(currentAirport, airport) <= airplane.calculateRange()) {
+                        possibleStops.add(airport);
+                    }
                 }
-            }
 
-            if (possibleStops.isEmpty()) {
-                throw new Exception("Flight impossible: No refueling airports available.");
-            }
-
-            // Select the airport that minimizes the remaining distance to the destination
-            Airport bestStop = null;
-            double minRemainingDistance = Double.MAX_VALUE;
-            for (Airport airport : possibleStops) {
-                double distanceToEnd = calculateDistance(airport, end);
-                if (distanceToEnd < minRemainingDistance) {
-                    minRemainingDistance = distanceToEnd;
-                    bestStop = airport;
+                if (possibleStops.isEmpty()) {
+                    throw new Exception("Flight impossible: No refueling airports available.");
                 }
+
+                // Select the airport that minimizes the remaining distance to the destination
+                Airport bestStop = null;
+                double minRemainingDistance = Double.MAX_VALUE;
+                for (Airport airport : possibleStops) {
+                    double distanceToEnd = calculateDistance(airport, destination);
+                    if (distanceToEnd < minRemainingDistance) {
+                        minRemainingDistance = distanceToEnd;
+                        bestStop = airport;
+                    }
+                }
+
+                // Add the selected airport as a layover
+                layovers.add(bestStop);
+                totalDistance += calculateDistance(currentAirport, bestStop);
+                currentAirport = bestStop;
+                remainingDistance = calculateDistance(currentAirport, destination);
             }
 
-            // Add the selected airport as a layover
-            layovers.add(bestStop);
-            currentAirport = bestStop;
-            remainingDistance = calculateDistance(currentAirport, end);
+            // Add the mandatory destination as a stop
+            layovers.add(destination);
+            totalDistance += calculateDistance(currentAirport, destination);
+            currentAirport = destination;
         }
 
         return layovers;
@@ -90,7 +99,6 @@ public class Flight {
         List<Airport> allStops = new ArrayList<>();
         allStops.add(start);
         allStops.addAll(layovers);
-        allStops.add(end);
 
         for (int i = 0; i < allStops.size() - 1; i++) {
             Airport legStart = allStops.get(i);

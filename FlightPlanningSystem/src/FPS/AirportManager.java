@@ -157,33 +157,42 @@ public void removeAirport(int index) {
     // Display all airports in the database
     public void displayAllAirports() {
         String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat";
-    
+
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
-            // Print table header
+
+            // Print table header with extended space for the "Name" column
             System.out.println("List of Airports:");
             System.out.println("------------------------------------------------------------");
-            System.out.printf("%-10s %-20s %-10s %-10s %-15s %-10s%n", "ICAO", "Name", "Latitude", "Longitude", "Comm Freq", "Fuel Types");
+            System.out.printf("%-10s %-30s %-10s %-10s %-15s %-10s%n", "ICAO", "Name", "Latitude", "Longitude", "Comm Freq", "Fuel Types");
             System.out.println("------------------------------------------------------------");
-    
+
             // Read and display each line
             while ((line = br.readLine()) != null) {
                 line = line.trim(); // Remove leading and trailing whitespace
                 if (line.isEmpty()) {
                     continue; // Skip empty lines
                 }
-    
+
                 String[] fields = line.split(",");
                 if (fields.length == 6) {
                     String icao = fields[0];
-                    String name = fields[1];
+                    String name = fields[1].replace("International", "Intl"); // Abbreviate "International"
                     double latitude = Double.parseDouble(fields[2]);
                     double longitude = Double.parseDouble(fields[3]);
                     double commFrequencies = Double.parseDouble(fields[4]);
                     String fuelTypes = fields[5];
-    
-                    // Display the airport details
-                    System.out.printf("%-10s %-20s %-10.4f %-10.4f %-15.2f %-10s%n", icao, name, latitude, longitude, commFrequencies, fuelTypes);
+
+                    // Split the name into multiple lines if necessary
+                    List<String> nameLines = splitNameIntoLines(name, 30);
+
+                    // Display the first line with the rest of the data
+                    System.out.printf("%-10s %-30s %-10.4f %-10.4f %-15.2f %-10s%n", icao, nameLines.get(0), latitude, longitude, commFrequencies, fuelTypes);
+
+                    // Display additional lines for the name, if any
+                    for (int i = 1; i < nameLines.size(); i++) {
+                        System.out.printf("%-10s %-30s%n", "", nameLines.get(i));
+                    }
                 }
             }
             System.out.println("------------------------------------------------------------");
@@ -219,24 +228,73 @@ public void removeAirport(int index) {
             String line;
             int currentIndex = 0;
 
+            // Print table header with extended space for the "Name" column
+            System.out.printf("%-10s %-30s %-10s %-10s %-15s %-10s%n", "ICAO", "Name", "Latitude", "Longitude", "Comm Freq", "Fuel Types");
+            System.out.println("------------------------------------------------------------");
+
             // Read the file line by line
             while ((line = br.readLine()) != null) {
                 if (currentIndex == index) {
+                    line = line.trim(); // Remove leading and trailing whitespace
+                    if (line.isEmpty()) {
+                        System.out.println("No airport found at the specified index.");
+                        return;
+                    }
+
                     String[] fields = line.split(",");
                     if (fields.length == 6) {
-                        System.out.println("Icao: " + fields[0]);
-                        System.out.println("Name: " + fields[1]);
-                        System.out.println("Laditude: " + fields[2]);
-                        System.out.println("Longitude: " + fields[3]);
-                        System.out.println("Comm Frequency: " + fields[4]);
-                        System.out.println("Fuel Types: " + fields[5]);
+                        String icao = fields[0];
+                        String name = fields[1].replace("International", "Intl"); // Abbreviate "International"
+                        double latitude = Double.parseDouble(fields[2]);
+                        double longitude = Double.parseDouble(fields[3]);
+                        double commFrequencies = Double.parseDouble(fields[4]);
+                        String fuelTypes = fields[5];
+
+                        // Split the name into multiple lines if necessary
+                        List<String> nameLines = splitNameIntoLines(name, 30);
+
+                        // Display the first line with the rest of the data
+                        System.out.printf("%-10s %-30s %-10.4f %-10.4f %-15.2f %-10s%n", icao, nameLines.get(0), latitude, longitude, commFrequencies, fuelTypes);
+
+                        // Display additional lines for the name, if any
+                        for (int i = 1; i < nameLines.size(); i++) {
+                            System.out.printf("%-10s %-30s%n", "", nameLines.get(i));
+                        }
+                    } else {
+                        System.out.println("Invalid data format at the specified index.");
                     }
+                    return; // Exit after displaying the airport
                 }
                 currentIndex++;
             }
+
+            // If the index is not found
+            System.out.println("No airport found at the specified index.");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    // Helper method to split a name into multiple lines without splitting words
+    private List<String> splitNameIntoLines(String name, int maxLength) {
+        List<String> lines = new ArrayList<>();
+        String[] words = name.split(" ");
+        StringBuilder currentLine = new StringBuilder();
+
+        for (String word : words) {
+            if (currentLine.length() + word.length() + 1 > maxLength) {
+                // Add the current line to the list and start a new line
+                lines.add(currentLine.toString().trim());
+                currentLine = new StringBuilder();
+            }
+            currentLine.append(word).append(" ");
+        }
+
+        // Add the last line to the list
+        if (currentLine.length() > 0) {
+            lines.add(currentLine.toString().trim());
+        }
+
+        return lines;
     }
 }
 
