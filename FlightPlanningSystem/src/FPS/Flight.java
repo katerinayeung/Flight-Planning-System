@@ -59,17 +59,18 @@ public class Flight {
                 throw new Exception("Flight impossible: No refueling airports available.");
             }
 
-            // Select the farthest airport toward the destination
+            // Select the airport that minimizes the remaining distance to the destination
             Airport bestStop = null;
-            double maxDistanceToEnd = 0;
+            double minRemainingDistance = Double.MAX_VALUE;
             for (Airport airport : possibleStops) {
                 double distanceToEnd = calculateDistance(airport, end);
-                if (distanceToEnd > maxDistanceToEnd) {
-                    maxDistanceToEnd = distanceToEnd;
+                if (distanceToEnd < minRemainingDistance) {
+                    minRemainingDistance = distanceToEnd;
                     bestStop = airport;
                 }
             }
 
+            // Add the selected airport as a layover
             layovers.add(bestStop);
             currentAirport = bestStop;
             remainingDistance = calculateDistance(currentAirport, end);

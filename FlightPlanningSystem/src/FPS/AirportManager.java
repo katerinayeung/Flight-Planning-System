@@ -190,6 +190,28 @@ public void removeAirport(int index) {
             e.printStackTrace();
         }
     }
+
+    // Return a list of all airports in the database
+    public List<Airport> getAllAirports() {
+        List<Airport> airports = new ArrayList<>();
+        String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat";
+    
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+    
+            // Read each line and create Airport objects
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(",");
+                if (fields.length == 6) {
+                    Airport airport = new Airport(fields[0], fields[1], Double.parseDouble(fields[2]), Double.parseDouble(fields[3]), Double.parseDouble(fields[4]), fields[5]);
+                    airports.add(airport);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return airports;
+    }
 }
 
 

@@ -119,7 +119,7 @@ public class sysmain {
         // Create and process the flight
         try {
             Flight flight = new Flight(startAirport, destinationAirports.get(destinationAirports.size() - 1), selectedAirplane);
-            flight.determineLayovers(destinationAirports);
+            flight.determineLayovers(airportManager.getAllAirports());
             flight.generateLegs();
     
             // Create and display the flight plan
