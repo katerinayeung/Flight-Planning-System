@@ -22,10 +22,16 @@ public class Flight {
         this.legs = new ArrayList<>();
     }
 
-    // Calculate total distance between two airports (flat Earth assumption)
+    // Calculate total distance between two airports (flat Earth assumption with latitude scaling)
     public double calculateDistance(Airport a, Airport b) {
-        double latDiff = b.getLatitude() - a.getLatitude();
-        double lonDiff = b.getLongitude() - a.getLongitude();
+        final double KM_PER_DEGREE_LATITUDE = 111.0; // Approximate distance in km for 1 degree of latitude
+        double avgLatitude = Math.toRadians((a.getLatitude() + b.getLatitude()) / 2.0);
+
+        // Scale longitude difference by the cosine of the average latitude
+        double latDiff = (b.getLatitude() - a.getLatitude()) * KM_PER_DEGREE_LATITUDE;
+        double lonDiff = (b.getLongitude() - a.getLongitude()) * KM_PER_DEGREE_LATITUDE * Math.cos(avgLatitude);
+
+        // Use the Pythagorean theorem to calculate the distance
         return Math.sqrt((latDiff * latDiff) + (lonDiff * lonDiff));
     }
 

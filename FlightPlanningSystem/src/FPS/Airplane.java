@@ -76,7 +76,7 @@ public class Airplane implements AirplaneInterface {
 
     public double calculateRange() {
         //System.out.println("Range: " + fuelCapacity / fuelBurnrate);
-        return fuelCapacity / fuelBurnrate;
+        return (fuelCapacity / fuelBurnrate)*cruiseSpeed;
         
     }
 
