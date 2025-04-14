@@ -3,7 +3,7 @@
  */
 
 package FPS;
-public class Airports{
+public class Airport{
     //attributes
     private String icao;
 	private String name;
@@ -13,7 +13,7 @@ public class Airports{
     private String fuelTypes;
 
     //constructor
-    public Airports(String icao, String name, double latitude, double longitude, double commFrequencies, String fuelTypes){
+    public Airport(String icao, String name, double latitude, double longitude, double commFrequencies, String fuelTypes){
         this.icao = icao;
         this.name = name;
         this.latitude = latitude;

@@ -64,6 +64,75 @@ public class sysmain {
     }
 
     private static void planFlight(Passenger user, Scanner input) {
+        AirportManager airportManager = new AirportManager(new Airport("", "", 0, 0, 0, ""));
+        AirplaneManager airplaneManager = new AirplaneManager(new Airplane("", "", "", 0, 0, 0));
+        System.out.println("\nPlanning a flight...");
+    
+        // Select a starting airport
+        System.out.print("Enter the ICAO code of the starting airport: ");
+        String startIcao = input.nextLine();
+        int startIndex = airportManager.searchAirport(startIcao);
+        if (startIndex == -1) {
+            System.out.println("The starting airport does not exist. Returning to the main menu.");
+            return;
+        }
+        Airport startAirport = airportManager.getAirport(startIndex);
+    
+        // Select destination airports
+        List<Airport> destinationAirports = new ArrayList<>();
+        while (true) {
+            System.out.print("Enter the ICAO code of a destination airport (or type 'done' to finish): ");
+            String destinationIcao = input.nextLine();
+            if (destinationIcao.equalsIgnoreCase("done")) {
+                break;
+            }
+            int destinationIndex = airportManager.searchAirport(destinationIcao);
+            if (destinationIndex == -1) {
+                System.out.println("The destination airport does not exist. Please try again.");
+            } else {
+                destinationAirports.add(airportManager.getAirport(destinationIndex));
+            }
+        }
+    
+        if (destinationAirports.isEmpty()) {
+            System.out.println("No destination airports were selected. Returning to the main menu.");
+            return;
+        }
+    
+        // Select an airplane
+        System.out.print("Enter the make and model of the airplane you want to use (e.g., 'Boeing 747'): ");
+        String airplaneInput = input.nextLine();
+        String[] airplaneParts = airplaneInput.split(" ", 2);
+        if (airplaneParts.length < 2) {
+            System.out.println("Invalid airplane input. Returning to the main menu.");
+            return;
+        }
+        String airplaneMake = airplaneParts[0];
+        String airplaneModel = airplaneParts[1];
+        int airplaneIndex =airplaneManager.searchAirplane(airplaneMake, airplaneModel);
+        if (airplaneIndex == -1) {
+            System.out.println("The airplane does not exist. Returning to the main menu.");
+            return;
+        }
+        Airplane selectedAirplane = airplaneManager.getAirplane(airplaneIndex);
+    
+        // Create and process the flight
+        try {
+            Flight flight = new Flight(startAirport, destinationAirports.get(destinationAirports.size() - 1), selectedAirplane);
+            flight.determineLayovers(destinationAirports);
+            flight.generateLegs();
+    
+            // Create and display the flight plan
+            FlightPlan flightPlan = new FlightPlan(flight);
+            flightPlan.displayPlan();
+        } catch (Exception e) {
+            System.out.println("An error occurred while planning the flight: " + e.getMessage());
+        }
+    
+        System.out.println("Returning to the main menu...");
+    }
+/* OLD planFlight method
+    private static void planFlight(Passenger user, Scanner input) {
         System.out.println("\nPlanning a flight...");
         List<String> destinations = new ArrayList<>();
 
@@ -99,8 +168,8 @@ public class sysmain {
             } else {
                 System.out.println("The plane does not exist or is spelled incorrectly. Please try again.");
             }*/
-            break;
-        }
+           //break;
+        /*/}
 
         // Create a flight plan
         FlightPlan flightPlan = new FlightPlan(departureAirport, arrivalAirports, null, null, 0, 0, 0);
@@ -110,10 +179,11 @@ public class sysmain {
         System.out.println("Departure Airport: " + flightPlan.getDepartureAirport());
         System.out.println("Arrival Airports: " + String.join(", ", arrivalAirports));
        //System.out.println("Selected Plane: " + selectedPlane);
-    }
+    } */
+    
 
     private static void manageAirportDatabase(Scanner input) {
-        AirportManager airportManager = new AirportManager(new Airports("", "", 0, 0, 0, ""));
+        AirportManager airportManager = new AirportManager(new Airport("", "", 0, 0, 0, ""));
         System.out.println("\nManaging Airport Database...");
         while (true) {
             System.out.println("\n1 Add an Airport\n2 Remove an Airport\n3 Modify an Airport\n4 View all Airports\n5 Return to the menu");

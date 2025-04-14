@@ -8,20 +8,38 @@ import java.util.*;
 
 public class AirportManager {
     
-    private Airports airport;
+    private Airport airport;
 
     // Constructor
-    public AirportManager(Airports airport) {
+    public AirportManager(Airport airport) {
         this.airport = airport;
     }
 
     // Getter
-    public Airports getAirport() {
-        return airport;
+    public Airport getAirport(int index) {
+        String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat";
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int currentIndex = 0;
+
+            // Read the file line by line
+            while ((line = br.readLine()) != null) {
+                if (currentIndex == index) {
+                    String[] fields = line.split(",");
+                    if (fields.length == 6) {
+                        return new Airport(fields[0], fields[1], Double.parseDouble(fields[2]), Double.parseDouble(fields[3]), Double.parseDouble(fields[4]), fields[5]);
+                    }
+                }
+                currentIndex++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no airport is found at the specified index
     }
 
     // Setter
-    public void setAirport(Airports airport) {
+    public void setAirport(Airport airport) {
         this.airport = airport;
     }
 

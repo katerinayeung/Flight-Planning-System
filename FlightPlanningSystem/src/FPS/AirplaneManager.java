@@ -18,8 +18,26 @@ public class AirplaneManager extends Airplane {
         this.airplane = airplane;
     }
 
-    public Airplane getAirplane() {
-        return airplane;
+    public Airplane getAirplane(int index) {
+        String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat";
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int currentIndex = 0;
+
+            // Read the file line by line
+            while ((line = br.readLine()) != null) {
+                if (currentIndex == index) {
+                    String[] fields = line.split(",");
+                    if (fields.length == 6) {
+                        return new Airplane(fields[0], fields[1], (fields[2]), Double.parseDouble(fields[3]), Double.parseDouble(fields[4]), Double.parseDouble(fields[5]));
+                    }
+                }
+                currentIndex++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no airplane is found at the specified index
     }
 
     public void addAirplane(String make, String model, String type, double fuelCapacity, double cruiseSpeed, double fuelBurnrate) {
