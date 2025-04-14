@@ -64,6 +64,7 @@ public class sysmain {
     }
 
     private static void planFlight(Passenger user, Scanner input) {
+        // Initializes Airport and Airplane Managers
         AirportManager airportManager = new AirportManager(new Airport("", "", 0, 0, 0, ""));
         AirplaneManager airplaneManager = new AirplaneManager(new Airplane("", "", "", 0, 0, 0));
         System.out.println("\nPlanning a flight...");
@@ -109,7 +110,7 @@ public class sysmain {
         }
         String airplaneMake = airplaneParts[0];
         String airplaneModel = airplaneParts[1];
-        int airplaneIndex =airplaneManager.searchAirplane(airplaneMake, airplaneModel);
+        int airplaneIndex = airplaneManager.searchAirplane(airplaneMake, airplaneModel);
         if (airplaneIndex == -1) {
             System.out.println("The airplane does not exist. Returning to the main menu.");
             return;
@@ -119,7 +120,7 @@ public class sysmain {
         // Create and process the flight
         try {
             Flight flight = new Flight(startAirport, destinationAirports.get(destinationAirports.size() - 1), selectedAirplane);
-            flight.determineLayovers(airportManager.getAllAirports());
+            flight.determineLayovers(destinationAirports);
             flight.generateLegs();
     
             // Create and display the flight plan

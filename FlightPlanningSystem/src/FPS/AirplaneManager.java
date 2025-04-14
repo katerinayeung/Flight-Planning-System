@@ -246,29 +246,48 @@ public class AirplaneManager extends Airplane {
             e.printStackTrace();
         }
     }
-    //Display a single airplane
-    public void displayAirplane(int index) {
-        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
-            String line;
-            int currentIndex = 0;
+    // Display a single airplane
+public void displayAirplane(int index) {
+    try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
+        String line;
+        int currentIndex = 0;
 
-            // Read the file line by line
-            while ((line = br.readLine()) != null) {
-                if (currentIndex == index) {
-                    String[] fields = line.split(",");
-                    if (fields.length == 6) {
-                        System.out.println("Make: " + fields[0]);
-                        System.out.println("Model: " + fields[1]);
-                        System.out.println("Type: " + fields[2]);
-                        System.out.println("Fuel Capacity: " + fields[3]);
-                        System.out.println("Cruise Speed: " + fields[4]);
-                        System.out.println("Fuel Burn Rate: " + fields[5]);
-                    }
+        // Print table header
+        System.out.printf("%-5s %-15s %-15s %-10s %-15s %-15s %-15s%n", "Index", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
+        System.out.println("-----------------------------------------------------------------------------------------------");
+
+        // Read the file line by line
+        while ((line = br.readLine()) != null) {
+            if (currentIndex == index) {
+                line = line.trim(); // Remove leading and trailing whitespace
+                if (line.isEmpty()) {
+                    System.out.println("No airplane found at the specified index.");
+                    return;
                 }
-                currentIndex++;
+
+                String[] fields = line.split(",");
+                if (fields.length == 6) {
+                    System.out.printf("%-5d %-15s %-15s %-10s %-15s %-20s %-15s%n",
+                            currentIndex,
+                            fields[0], // Make
+                            fields[1], // Model
+                            fields[2], // Type
+                            fields[3], // Fuel Capacity
+                            fields[4], // Cruise Speed
+                            fields[5]  // Fuel Burn Rate
+                    );
+                } else {
+                    System.out.println("Invalid data format at the specified index.");
+                }
+                return; // Exit after displaying the airplane
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            currentIndex++;
         }
+
+        // If the index is not found
+        System.out.println("No airplane found at the specified index.");
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
 }
