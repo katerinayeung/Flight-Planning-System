@@ -112,7 +112,7 @@ public class sysmain {
         String airplaneModel = airplaneParts[1];
         int airplaneIndex = airplaneManager.searchAirplane(airplaneMake, airplaneModel);
         if (airplaneIndex == -1) {
-            System.out.println("The airplane does not exist. Returning to the main menu.");
+            System.out.println("*** The airplane does not exist. Returning to the main menu.");
             return;
         }
         Airplane selectedAirplane = airplaneManager.getAirplane(airplaneIndex);
@@ -337,6 +337,11 @@ public class sysmain {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
+                        //check if the airplane already exists
+                        if (AirMan.searchAirplane(make, model) != -1) {
+                            System.out.println("*** The airplane already exists in the database. Please try again.");
+                            continue; // Restart the loop
+                        }
 
                         // Validate the type
                         String type;
@@ -452,7 +457,7 @@ public class sysmain {
 
                         int index = AirMan.searchAirplane(airplaneMake, airplaneModel);
                         if (index == -1) {
-                            System.out.println("The airplane does not exist in the database. Please try again.");
+                            System.out.println("*** The airplane does not exist in the database. Please try again.");
                             continue;
                         }
 
@@ -482,7 +487,7 @@ public class sysmain {
 
                         indexToModify = AirMan.searchAirplane(airplaneMakeToModify, airplaneModelToModify);
                         if (indexToModify == -1) {
-                            System.out.println("The airplane does not exist in the database. Please try again.");
+                            System.out.println("*** The airplane does not exist in the database. Please try again.");
                         } else {
                             System.out.println("Airplane found!");
                             break;
@@ -608,7 +613,7 @@ public class sysmain {
                     String airplaneModelToView = airplaneParts[1];
                     int airplaneIndex = AirMan.searchAirplane(airplaneMakeToView, airplaneModelToView);
                     if (airplaneIndex == -1) {
-                        System.out.println("The airplane does not exist. Please try again.");
+                        System.out.println("*** The airplane does not exist. Please try again.");
                         break;
                     }
                     AirMan.displayAirplane(airplaneIndex);
