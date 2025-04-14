@@ -262,13 +262,13 @@ public class sysmain {
             System.out.println("\n1 Add an Airplane\n2 Remove an Airplane\n3 Modify an Airplane\n4 View all Airplanes\n5 Return to the menu");
             System.out.print("\nEnter your choice: ");
             String choice = input.nextLine();
-            
+
             switch (choice) {
                 case "1":
                     // Add an Airplane
                     while (true) {
                         System.out.print("\nEnter Make (or type 'cancel' to return to the menu): ");
-                        String make = input.nextLine();
+                    String make = input.nextLine();
                         if (make.equalsIgnoreCase("cancel")) {
                             System.out.println("Returning to the menu...");
                             break;
@@ -278,8 +278,8 @@ public class sysmain {
                         String model = input.nextLine();
                         if (model.equalsIgnoreCase("cancel")) {
                             System.out.println("Returning to the menu...");
-                            break;
-                        }
+                        break;
+                    } 
 
                         // Validate the type
                         String type;
