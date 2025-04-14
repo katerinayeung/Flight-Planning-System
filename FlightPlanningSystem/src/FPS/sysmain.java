@@ -323,12 +323,27 @@ public class sysmain {
                             System.out.println("Returning to the menu...");
                             break;
                         }
+                        // Validate Make
+                        if (make == null || make.isEmpty()) {
+                            System.out.println("Invalid make. Please try again.");
+                            continue; // Restart the loop
+                        }
 
                         System.out.print("Enter Model (or type 'cancel' to return to the menu): ");
                         String model = input.nextLine();
                         if (model.equalsIgnoreCase("cancel")) {
                             System.out.println("Returning to the menu...");
                             break;
+                        }
+                        // Validate Model
+                        if (model == null || model.isEmpty()) {
+                            System.out.println("Invalid model. Please try again.");
+                            continue; // Restart the loop
+                        }
+                        //Check if the plane already exists
+                        if (AirMan.searchAirplane(make, model) != -1) {
+                            System.out.println("The airplane already exists. Please try again.");
+                            continue; // Restart the loop
                         }
 
                         // Validate the type

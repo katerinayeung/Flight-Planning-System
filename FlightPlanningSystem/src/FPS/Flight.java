@@ -97,7 +97,7 @@ public class Flight {
             Airport legEnd = allStops.get(i + 1);
             double distance = calculateDistance(legStart, legEnd);
             double heading = calculateHeading(legStart, legEnd);
-            double time = distance / airplane.getCruiseSpeed();
+            double time = (distance / airplane.getCruiseSpeed());
 
             // Create a leg map
             Map<String, Object> leg = new HashMap<>();
