@@ -131,56 +131,6 @@ public class sysmain {
     
         System.out.println("Returning to the main menu...");
     }
-/* OLD planFlight method
-    private static void planFlight(Passenger user, Scanner input) {
-        System.out.println("\nPlanning a flight...");
-        List<String> destinations = new ArrayList<>();
-
-        // Initialize destinations
-        while (true) {
-            System.out.print("Enter a destination (or type 'done' to finish): ");
-            String destination = input.nextLine();
-            if (destination.equalsIgnoreCase("done")) {
-                break;
-            }
-            destinations.add(destination);
-        }
-
-        if (destinations.size() < 2) {
-            System.out.println("You need to provide at least two destinations for departure and arrival.");
-            return;
-        }
-
-        // Set departure airport
-        String departureAirport = destinations.get(0);
-
-        // Set arrival airports (all destinations with index > 0)
-        List<String> arrivalAirports = destinations.subList(1, destinations.size());
-
-        // Initialize airplane
-                while (true) {
-            System.out.print("Enter the name of the plane you want to select: ");
-            String plane = input.nextLine();
-            /*if (AirplaneManager.searchAirplane(plane)) {
-                user.setSelectedPlane(plane);
-                System.out.println("Plane selected: " + plane);
-                break;
-            } else {
-                System.out.println("The plane does not exist or is spelled incorrectly. Please try again.");
-            }*/
-           //break;
-        /*/}
-
-        // Create a flight plan
-        FlightPlan flightPlan = new FlightPlan(departureAirport, arrivalAirports, null, null, 0, 0, 0);
-
-        System.out.println("\nFlight plan created successfully!");
-        System.out.println("Passenger Name: " + user.getName());
-        System.out.println("Departure Airport: " + flightPlan.getDepartureAirport());
-        System.out.println("Arrival Airports: " + String.join(", ", arrivalAirports));
-       //System.out.println("Selected Plane: " + selectedPlane);
-    } */
-    
 
     private static void manageAirportDatabase(Scanner input) {
         AirportManager airportManager = new AirportManager(new Airport("", "", 0, 0, 0, ""));
@@ -368,7 +318,7 @@ public class sysmain {
                     // Add an Airplane
                     while (true) {
                         System.out.print("\nEnter Make (or type 'cancel' to return to the menu): ");
-                    String make = input.nextLine();
+                        String make = input.nextLine();
                         if (make.equalsIgnoreCase("cancel")) {
                             System.out.println("Returning to the menu...");
                             break;
@@ -378,8 +328,8 @@ public class sysmain {
                         String model = input.nextLine();
                         if (model.equalsIgnoreCase("cancel")) {
                             System.out.println("Returning to the menu...");
-                        break;
-                    } 
+                            break;
+                        }
 
                         // Validate the type
                         String type;
@@ -473,60 +423,167 @@ public class sysmain {
                         break; // Exit the loop after successful addition
                     }
                     break;
+
                 case "2":
                     // Remove an Airplane
-                    System.out.print("\nEnter the make of the airplane to remove: ");
-                    String airplaneMake = input.nextLine();
-                    System.out.print("Enter the model of the airplane to remove: ");
-                    String airplaneModel = input.nextLine();
-                    int index = AirMan.searchAirplane(airplaneMake, airplaneModel);
-                    AirMan.removeAirplane(index);
-
-                    break;
-                case "3": 
-                    int indexToModify = -1;
                     while (true) {
-                        System.out.println("\nEnter the make and model of the airplane to modify (or enter 'x' twice to cancel): ");
-                        System.out.print("\nEnter make: ");
-                        String airplaneMakeToModify = input.nextLine();
-                        System.out.print("Enter model: ");
-                        String airplaneModelToModify = input.nextLine();
-                        if (airplaneMakeToModify.equals("x") && airplaneModelToModify.equals("x")) {
-                            System.out.println("exiting");
+                        System.out.print("\nEnter the make of the airplane to remove (or type 'cancel' to return to the menu): ");
+                        String airplaneMake = input.nextLine();
+                        if (airplaneMake.equalsIgnoreCase("cancel")) {
+                            System.out.println("Returning to the menu...");
                             break;
                         }
+
+                        System.out.print("Enter the model of the airplane to remove (or type 'cancel' to return to the menu): ");
+                        String airplaneModel = input.nextLine();
+                        if (airplaneModel.equalsIgnoreCase("cancel")) {
+                            System.out.println("Returning to the menu...");
+                            break;
+                        }
+
+                        int index = AirMan.searchAirplane(airplaneMake, airplaneModel);
+                        if (index == -1) {
+                            System.out.println("The airplane does not exist. Please try again.");
+                            continue;
+                        }
+
+                        AirMan.removeAirplane(index);
+                        System.out.println("Airplane removed successfully!");
+                        break;
+                    }
+                    break;
+
+                case "3":
+                    // Modify an Airplane
+                    int indexToModify = -1;
+                    while (true) {
+                        System.out.println("\nEnter the make and model of the airplane to modify (or type 'cancel' to return to the menu): ");
+                        System.out.print("Enter make: ");
+                        String airplaneMakeToModify = input.nextLine();
+                        if (airplaneMakeToModify.equalsIgnoreCase("cancel")) {
+                            System.out.println("Returning to the menu...");
+                            break;
+                        }
+
+                        System.out.print("Enter model: ");
+                        String airplaneModelToModify = input.nextLine();
+                        if (airplaneModelToModify.equalsIgnoreCase("cancel")) {
+                            System.out.println("Returning to the menu...");
+                            break;
+                        }
+
                         indexToModify = AirMan.searchAirplane(airplaneMakeToModify, airplaneModelToModify);
                         if (indexToModify == -1) {
                             System.out.println("The airplane does not exist. Please try again.");
-                        }
-                        else {
+                        } else {
                             System.out.println("Airplane found!");
                             break;
                         }
-
                     }
-                    if (indexToModify == -1) break;
-                    
-                        // Modify an Airplane
-                        
-                        System.out.print("\nEnter Make: ");
-                        String make = input.nextLine();
-                        System.out.print("Enter Model: ");
-                        String model = input.nextLine();
-                        System.out.print("Enter Type: ");
-                        String type = input.nextLine();
-                        System.out.print("Enter Fuel Capacity: ");
-                        double fuelCapacity = input.nextDouble();
-                        System.out.print("Enter Cruise Speed: ");
-                        double cruiseSpeed = input.nextDouble();
-                        System.out.print("Enter Fuel Burn Rate: ");
-                        double fuelBurnRate = input.nextDouble();
-                        input.nextLine(); // Consume newline
 
-                        AirMan.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate, indexToModify);
-                        System.out.println("Airplane modified successfully!");
+                    if (indexToModify == -1) break;
+
+                    // Modify the airplane
+                    System.out.print("\nEnter Make (or type 'cancel' to return to the menu): ");
+                    String make = input.nextLine();
+                    if (make.equalsIgnoreCase("cancel")) {
+                        System.out.println("Returning to the menu...");
                         break;
-                    
+                    }
+
+                    System.out.print("Enter Model (or type 'cancel' to return to the menu): ");
+                    String model = input.nextLine();
+                    if (model.equalsIgnoreCase("cancel")) {
+                        System.out.println("Returning to the menu...");
+                        break;
+                    }
+
+                    String type;
+                    while (true) {
+                        System.out.print("Enter Type (Jet, Prop, or Turboprop) (or type 'cancel' to return to the menu): ");
+                        type = input.nextLine();
+                        if (type.equalsIgnoreCase("cancel")) {
+                            System.out.println("Returning to the menu...");
+                            break;
+                        }
+                        if (type.equalsIgnoreCase("Jet") || type.equalsIgnoreCase("Prop") || type.equalsIgnoreCase("Turboprop")) {
+                            break; // Valid type
+                        } else {
+                            System.out.println("Invalid type. Please enter 'Jet', 'Prop', or 'Turboprop'.");
+                        }
+                    }
+                    if (type.equalsIgnoreCase("cancel")) break;
+
+                    double fuelCapacity = 0, cruiseSpeed = 0, fuelBurnRate = 0;
+
+                    // Validate Fuel Capacity
+                    while (true) {
+                        try {
+                            System.out.print("Enter Fuel Capacity (or type 'cancel' to return to the menu): ");
+                            String inputFuelCapacity = input.nextLine();
+                            if (inputFuelCapacity.equalsIgnoreCase("cancel")) {
+                                System.out.println("Returning to the menu...");
+                                break;
+                            }
+                            fuelCapacity = Double.parseDouble(inputFuelCapacity);
+                            if (fuelCapacity < 0) {
+                                System.out.println("Fuel Capacity cannot be negative. Please try again.");
+                                continue;
+                            }
+                            break; // Valid input
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input. Please enter a numeric value for Fuel Capacity.");
+                        }
+                    }
+                    if (fuelCapacity == 0) break;
+
+                    // Validate Cruise Speed
+                    while (true) {
+                        try {
+                            System.out.print("Enter Cruise Speed (or type 'cancel' to return to the menu): ");
+                            String inputCruiseSpeed = input.nextLine();
+                            if (inputCruiseSpeed.equalsIgnoreCase("cancel")) {
+                                System.out.println("Returning to the menu...");
+                                break;
+                            }
+                            cruiseSpeed = Double.parseDouble(inputCruiseSpeed);
+                            if (cruiseSpeed < 0) {
+                                System.out.println("Cruise Speed cannot be negative. Please try again.");
+                                continue;
+                            }
+                            break; // Valid input
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input. Please enter a numeric value for Cruise Speed.");
+                        }
+                    }
+                    if (cruiseSpeed == 0) break;
+
+                    // Validate Fuel Burn Rate
+                    while (true) {
+                        try {
+                            System.out.print("Enter Fuel Burn Rate (or type 'cancel' to return to the menu): ");
+                            String inputFuelBurnRate = input.nextLine();
+                            if (inputFuelBurnRate.equalsIgnoreCase("cancel")) {
+                                System.out.println("Returning to the menu...");
+                                break;
+                            }
+                            fuelBurnRate = Double.parseDouble(inputFuelBurnRate);
+                            if (fuelBurnRate < 0) {
+                                System.out.println("Fuel Burn Rate cannot be negative. Please try again.");
+                                continue;
+                            }
+                            break; // Valid input
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input. Please enter a numeric value for Fuel Burn Rate.");
+                        }
+                    }
+                    if (fuelBurnRate == 0) break;
+
+                    // Modify the airplane
+                    AirMan.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate, indexToModify);
+                    System.out.println("Airplane modified successfully!");
+                    break;
+
                 case "4":
                     //View singel Airplane
                     System.out.print("\nEnter the make and model of the airplane to view (e.g., 'Boeing 747'): ");
@@ -554,6 +611,7 @@ public class sysmain {
                 case "6":
                     // Return to the menu
                     return;
+
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
