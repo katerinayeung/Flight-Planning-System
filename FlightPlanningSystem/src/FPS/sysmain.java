@@ -116,7 +116,7 @@ public class sysmain {
         AirportManager airportManager = new AirportManager(new Airports("", "", 0, 0, 0, ""));
         System.out.println("\nManaging Airport Database...");
         while (true) {
-            System.out.println("\n1 Add an Airport\n2 Remove an Airport\n3 Modify an Airport\n4 Return to the menu\n5 View all Airports");
+            System.out.println("\n1 Add an Airport\n2 Remove an Airport\n3 Modify an Airport\n4 View all Airports\n5 Return to the menu");
             System.out.print("\nEnter your choice: ");
             int choice = input.nextInt();
             input.nextLine(); // Consume newline
@@ -129,6 +129,11 @@ public class sysmain {
                     if (icao == null || icao.isEmpty() || icao.length() != 4) {
                         System.err.println("\nInvalid ICAO code. It must be a non-empty string of 4 characters.");
                         break;
+                    }
+                    if (airportManager.searchAirport(icao) != -1) {
+                        // Check if the airport already exists
+                        System.out.println("The airport already exists. Please try again.");
+                        break; // Restart the loop
                     }
                     System.out.print("Enter Name: ");
                     String name = input.nextLine();
@@ -162,10 +167,6 @@ public class sysmain {
                         System.err.println("\nInvalid fuel types. It must be a non-empty string.");
                         break;
                     }
-
-                    //if (AirportManager.searchAirport(icao)) {
-                     //   System.out.println("The airport already exists.");
-                    //} else {
                     
                     airportManager.addAirport(icao, name, latitude, longitude, commFrequencies, fuelTypes);
                     System.out.println("Airport added successfully!");
@@ -175,7 +176,16 @@ public class sysmain {
                     // Remove an Airport
                     System.out.print("\nEnter the ICAO of the airport to remove: ");
                     String airportIcao = input.nextLine(); // Correctly read the ICAO
-                    airportManager.removeAirport(airportIcao); // Use the correct variable
+                    if (airportIcao == null || airportIcao.isEmpty() || airportIcao.length() != 4) {
+                        System.err.println("\nInvalid ICAO code. It must be a non-empty string of 4 characters.");
+                        break;
+                    }
+                    int indexToRemove = airportManager.searchAirport(airportIcao);
+                    if (indexToRemove == -1) {
+                        System.out.println("The airport does not exist. Please try again.");
+                        break;
+                    }
+                    airportManager.removeAirport(indexToRemove); // Use the correct variable
                     System.out.println("Airport removed successfully!");
                     break;
                    
@@ -245,6 +255,11 @@ public class sysmain {
                     System.out.println("Airport modified successfully!");
                     break;
                 case 4:
+                    // View all Airports
+                    System.out.println("\nAll Airports in the Database:");
+                    airportManager.displayAllAirports();
+                    break;
+                case 5:
                     // Return to the menu
                     return;
                 default:
@@ -383,7 +398,7 @@ public class sysmain {
                     AirMan.removeAirplane(index);
 
                     break;
-                /*case "3": 
+                case "3": 
                     int indexToModify = -1;
                     while (true) {
                         System.out.println("\nEnter the make and model of the airplane to modify (or enter 'x' twice to cancel): ");
@@ -410,23 +425,23 @@ public class sysmain {
                         // Modify an Airplane
                         
                         System.out.print("\nEnter Make: ");
-                        make = input.nextLine();
+                        String make = input.nextLine();
                         System.out.print("Enter Model: ");
-                        model = input.nextLine();
+                        String model = input.nextLine();
                         System.out.print("Enter Type: ");
-                        type = input.nextLine();
+                        String type = input.nextLine();
                         System.out.print("Enter Fuel Capacity: ");
-                        fuelCapacity = input.nextDouble();
+                        double fuelCapacity = input.nextDouble();
                         System.out.print("Enter Cruise Speed: ");
-                        cruiseSpeed = input.nextDouble();
+                        double cruiseSpeed = input.nextDouble();
                         System.out.print("Enter Fuel Burn Rate: ");
-                        fuelBurnRate = input.nextDouble();
+                        double fuelBurnRate = input.nextDouble();
                         input.nextLine(); // Consume newline
 
                         AirMan.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate, indexToModify);
                         System.out.println("Airplane modified successfully!");
                         break;
-                    */
+                    
                 case "4":
                     // View all Airplanes
                     System.out.println("\nAll Airplanes in the Database:");

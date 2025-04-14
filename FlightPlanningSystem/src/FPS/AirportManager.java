@@ -9,7 +9,6 @@ import java.util.*;
 public class AirportManager {
     
     private Airports airport;
-    private final String DATABASE_FILE = "airports.dat";  // Simulating a simple file-based DB
 
     // Constructor
     public AirportManager(Airports airport) {
@@ -40,34 +39,48 @@ public class AirportManager {
 }
 
 // Remove airport from the database
-    public void removeAirport(String icao) {
-    // Check if the airport exists in the index
-    Airports airportToRemove = airportIndex.get(icao.toLowerCase());
-    if (airportToRemove == null) {
-        System.out.println("Airport with ICAO " + icao + " not found.");
+public void removeAirport(int index) {
+    String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat";
+    List<String> airports = new ArrayList<>();
+
+    // Read all lines into a list
+    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            airports.add(line);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
         return;
     }
 
-    // Remove the airport from the index
-    airportIndex.remove(icao.toLowerCase());
-    airportIndex.remove(airportToRemove.getName().toLowerCase()); // Remove by name as well
+    // Check if the index is valid
+    if (index < 0 || index >= airports.size()) {
+        System.out.println("Invalid index. No airport removed.");
+        return;
+    }
 
-    // Write the updated index back to the file
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATABASE_FILE))) {
-        for (Airports airport : new HashSet<>(airportIndex.values())) { // Avoid duplicates
-            String airportData = String.format("%s,%s,%.6f,%.6f,%.2f,%s%n",
-                airport.getIcao(),
-                airport.getName(),
-                airport.getLatitude(),
-                airport.getLongitude(),
-                airport.getCommFrequencies(),
-                airport.getFuelTypes()
-            );
-            writer.write(airportData);
+    // Remove the airport at the specified index
+    if (index < airports.size() - 1) {
+        // Move the last airport to the removed airport's position
+        String lastAirport = airports.remove(airports.size() - 1);
+        airports.set(index, lastAirport);
+    } else {
+        // If it's the last airport, just remove it
+        airports.remove(index);
+    }
+
+    // Rewrite the file with the updated list
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+        for (String airport : airports) {
+            bw.write(airport);
+            bw.newLine();
         }
     } catch (IOException e) {
-        System.err.println("Error removing airport: " + e.getMessage());
+        e.printStackTrace();
     }
+
+    System.out.println("Airport removed and list updated successfully.");
 }
 
 // Modify airport information in the database
@@ -99,17 +112,6 @@ public class AirportManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-            // Validate input parameters
-        
-        
-        
-        
-        
-        
-        
-
-
     }
 
 // Search for an airport by ICAO or name
@@ -132,8 +134,43 @@ public class AirportManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("\nAirport not found in the database.");
         return -1; // Return -1 if no match is found
+    }
+    // Display all airports in the database
+    public void displayAllAirports() {
+        String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat";
+    
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            System.out.println("List of Airports:");
+            System.out.println("------------------------------------------------------------");
+            System.out.printf("%-10s %-20s %-10s %-10s %-15s %-10s%n", "ICAO", "Name", "Latitude", "Longitude", "Comm Freq", "Fuel Types");
+            System.out.println("------------------------------------------------------------");
+    
+            // Read and display each line
+            while ((line = br.readLine()) != null) {
+                line = line.trim(); // Remove leading and trailing whitespace
+                if (line.isEmpty()) {
+                    continue; // Skip empty lines
+                }
+    
+                String[] fields = line.split(",");
+                if (fields.length == 6) {
+                    String icao = fields[0];
+                    String name = fields[1];
+                    double latitude = Double.parseDouble(fields[2]);
+                    double longitude = Double.parseDouble(fields[3]);
+                    double commFrequencies = Double.parseDouble(fields[4]);
+                    String fuelTypes = fields[5];
+    
+                    // Display the airport details
+                    System.out.printf("%-10s %-20s %-10.4f %-10.4f %-15.2f %-10s%n", icao, name, latitude, longitude, commFrequencies, fuelTypes);
+                }
+            }
+            System.out.println("------------------------------------------------------------");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

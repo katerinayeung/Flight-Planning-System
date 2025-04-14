@@ -128,7 +128,6 @@ public class AirplaneManager extends Airplane {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("\nAirplane not found in the database.");
         return -1; // Return -1 if no match is found
     }
 
