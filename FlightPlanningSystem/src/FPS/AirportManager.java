@@ -160,6 +160,7 @@ public void removeAirport(int index) {
     
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
+            // Print table header
             System.out.println("List of Airports:");
             System.out.println("------------------------------------------------------------");
             System.out.printf("%-10s %-20s %-10s %-10s %-15s %-10s%n", "ICAO", "Name", "Latitude", "Longitude", "Comm Freq", "Fuel Types");

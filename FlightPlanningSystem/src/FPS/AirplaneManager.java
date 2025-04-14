@@ -41,15 +41,42 @@ public class AirplaneManager extends Airplane {
     }
 
     public void addAirplane(String make, String model, String type, double fuelCapacity, double cruiseSpeed, double fuelBurnrate) {
-        
-        // Add airplane to database (e.g., write to file)
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat", true))) {
-            writer.newLine();
-            writer.write(make + "," + model + "," + type + "," + fuelCapacity + "," + cruiseSpeed + "," + fuelBurnrate);
+        String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat";
+        List<String> airplanes = new ArrayList<>();
+        boolean airplaneAdded = false;
+    
+        // Read all lines into a list
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim(); // Remove leading and trailing whitespace
+                if (line.isEmpty()) {
+                    continue; // Skip empty lines while reading
+                }
+                airplanes.add(line); // Add the existing line to the list
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+    
+        // Add the new airplane to the list
+        airplanes.add(make + "," + model + "," + type + "," + fuelCapacity + "," + cruiseSpeed + "," + fuelBurnrate);
+    
+        // Remove any remaining empty lines from the list
+        airplanes.removeIf(String::isEmpty);
+    
+        // Rewrite the file with the updated list
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            for (String airplane : airplanes) {
+                bw.write(airplane);
+                bw.newLine();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+    
+        System.out.println("Airplane added successfully!");
     }
 
    public void removeAirplane(int index) {
@@ -187,13 +214,18 @@ public class AirplaneManager extends Airplane {
         try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
             String line;
             int index = 0;
-
+    
             // Print table header
             System.out.printf("%-5s %-15s %-15s %-10s %-15s %-15s %-15s%n", "Index", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
             System.out.println("-----------------------------------------------------------------------------------------------");
-
+    
             // Iterate through the file line by line
             while ((line = br.readLine()) != null) {
+                line = line.trim(); // Remove leading and trailing whitespace
+                if (line.isEmpty()) {
+                    continue; // Skip empty lines
+                }
+    
                 String[] fields = line.split(",");
                 if (fields.length == 6) {
                     System.out.printf("%-5d %-15s %-15s %-10s %-15s %-20s %-15s%n",

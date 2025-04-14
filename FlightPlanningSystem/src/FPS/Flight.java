@@ -34,7 +34,7 @@ public class Flight {
         if (airplaneType.equalsIgnoreCase("Jet") || airplaneType.equalsIgnoreCase("Turboprop")) {
             return airport.getFuelTypes().contains("JA-a");
         } else {
-            return airport.getFuelTypes().contains("AVGAS");
+            return airport.getFuelTypes().contains("AvGas");
         }
     }
 
