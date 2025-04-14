@@ -469,70 +469,102 @@ public class sysmain {
                     if (indexToModify == -1) break;
 
                     // Modify the airplane
-                    System.out.print("\nEnter Make: ");
+                    System.out.print("\nEnter Make (or type 'cancel' to return to the menu): ");
                     String make = input.nextLine();
-                    System.out.print("Enter Model: ");
+                    if (make.equalsIgnoreCase("cancel")) {
+                        System.out.println("Returning to the menu...");
+                        break;
+                    }
+
+                    System.out.print("Enter Model (or type 'cancel' to return to the menu): ");
                     String model = input.nextLine();
-                    System.out.print("Enter Type: ");
+                    if (model.equalsIgnoreCase("cancel")) {
+                        System.out.println("Returning to the menu...");
+                        break;
+                    }
+
                     String type;
                     while (true) {
-                        System.out.print("Enter Type (Jet, Prop, or Turboprop): ");
+                        System.out.print("Enter Type (Jet, Prop, or Turboprop) (or type 'cancel' to return to the menu): ");
                         type = input.nextLine();
+                        if (type.equalsIgnoreCase("cancel")) {
+                            System.out.println("Returning to the menu...");
+                            break;
+                        }
                         if (type.equalsIgnoreCase("Jet") || type.equalsIgnoreCase("Prop") || type.equalsIgnoreCase("Turboprop")) {
                             break; // Valid type
                         } else {
                             System.out.println("Invalid type. Please enter 'Jet', 'Prop', or 'Turboprop'.");
                         }
                     }
+                    if (type.equalsIgnoreCase("cancel")) break;
+
                     double fuelCapacity = 0, cruiseSpeed = 0, fuelBurnRate = 0;
 
-                    // Validate numeric inputs
+                    // Validate Fuel Capacity
                     while (true) {
                         try {
-                            System.out.print("Enter Fuel Capacity: ");
-                            fuelCapacity = input.nextDouble();
+                            System.out.print("Enter Fuel Capacity (or type 'cancel' to return to the menu): ");
+                            String inputFuelCapacity = input.nextLine();
+                            if (inputFuelCapacity.equalsIgnoreCase("cancel")) {
+                                System.out.println("Returning to the menu...");
+                                break;
+                            }
+                            fuelCapacity = Double.parseDouble(inputFuelCapacity);
                             if (fuelCapacity < 0) {
                                 System.out.println("Fuel Capacity cannot be negative. Please try again.");
                                 continue;
                             }
-                            break;
-                        } catch (InputMismatchException e) {
+                            break; // Valid input
+                        } catch (NumberFormatException e) {
                             System.out.println("Invalid input. Please enter a numeric value for Fuel Capacity.");
-                            input.nextLine(); // Clear invalid input
                         }
                     }
+                    if (fuelCapacity == 0) break;
 
+                    // Validate Cruise Speed
                     while (true) {
                         try {
-                            System.out.print("Enter Cruise Speed: ");
-                            cruiseSpeed = input.nextDouble();
+                            System.out.print("Enter Cruise Speed (or type 'cancel' to return to the menu): ");
+                            String inputCruiseSpeed = input.nextLine();
+                            if (inputCruiseSpeed.equalsIgnoreCase("cancel")) {
+                                System.out.println("Returning to the menu...");
+                                break;
+                            }
+                            cruiseSpeed = Double.parseDouble(inputCruiseSpeed);
                             if (cruiseSpeed < 0) {
                                 System.out.println("Cruise Speed cannot be negative. Please try again.");
                                 continue;
                             }
-                            break;
-                        } catch (InputMismatchException e) {
+                            break; // Valid input
+                        } catch (NumberFormatException e) {
                             System.out.println("Invalid input. Please enter a numeric value for Cruise Speed.");
-                            input.nextLine(); // Clear invalid input
                         }
                     }
+                    if (cruiseSpeed == 0) break;
 
+                    // Validate Fuel Burn Rate
                     while (true) {
                         try {
-                            System.out.print("Enter Fuel Burn Rate: ");
-                            fuelBurnRate = input.nextDouble();
+                            System.out.print("Enter Fuel Burn Rate (or type 'cancel' to return to the menu): ");
+                            String inputFuelBurnRate = input.nextLine();
+                            if (inputFuelBurnRate.equalsIgnoreCase("cancel")) {
+                                System.out.println("Returning to the menu...");
+                                break;
+                            }
+                            fuelBurnRate = Double.parseDouble(inputFuelBurnRate);
                             if (fuelBurnRate < 0) {
                                 System.out.println("Fuel Burn Rate cannot be negative. Please try again.");
                                 continue;
                             }
-                            break;
-                        } catch (InputMismatchException e) {
+                            break; // Valid input
+                        } catch (NumberFormatException e) {
                             System.out.println("Invalid input. Please enter a numeric value for Fuel Burn Rate.");
-                            input.nextLine(); // Clear invalid input
                         }
                     }
+                    if (fuelBurnRate == 0) break;
 
-                    input.nextLine(); // Consume newline
+                    // Modify the airplane
                     AirMan.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate, indexToModify);
                     System.out.println("Airplane modified successfully!");
                     break;
