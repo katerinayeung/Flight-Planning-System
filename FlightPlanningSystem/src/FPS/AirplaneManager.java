@@ -151,6 +151,7 @@ public class AirplaneManager extends Airplane {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Airplane modified successfully!");
     }
 
     public int searchAirplane(String make, String model) {
