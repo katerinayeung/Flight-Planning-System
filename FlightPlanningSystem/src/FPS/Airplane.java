@@ -1,6 +1,6 @@
 package FPS;
 
-public class Airplane implements AirplaneInterface {
+public class Airplane {
     private String make;
     private String model;
     private String type;
