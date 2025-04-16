@@ -322,9 +322,9 @@ public class sysmain {
             switch (choice) {
                 case "1":
                     // Add an Airplane
-                    System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
+                    System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.\n");
                     while (true) {
-                        System.out.print("\nEnter the make of the airplane: ");
+                        System.out.print("Enter the make of the airplane: ");
                         String make = input.nextLine();
                         if (make.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
@@ -336,6 +336,12 @@ public class sysmain {
                         if (model.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
+                        }
+
+                        // Check if the airplane already exists
+                        if (AirMan.searchAirplane(make, model) != -1) {
+                            System.out.println("*** The airplane already exists in the database. Please try again.");
+                            continue; // Loop back to prompt for a new make and model
                         }
 
                         // Validate the type
@@ -420,14 +426,9 @@ public class sysmain {
                         }
                         if (fuelBurnRate == 0) break;
 
-                        // Check if the airplane already exists
-                        if (AirMan.searchAirplane(make, model) != -1) {
-                            System.out.println("The airplane already exists in the database. Please try again.");
-                            continue; // Restart the loop
-                        }
-
                         // Add the airplane to the database
                         AirMan.addAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate);
+                        System.out.println("Airplane added successfully!");
                         break; // Exit the loop after successful addition
                     }
                     break;
@@ -463,26 +464,27 @@ public class sysmain {
 
                 case "3":
                     // Modify an Airplane
-                    System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
+                    System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.\n");
                     int indexToModify = -1;
                     while (true) {
-                        System.out.print("\nEnter the make of the airplane to modify: ");
-                        String airplaneMakeToModify = input.nextLine();
-                        if (airplaneMakeToModify.equalsIgnoreCase("cancel")) {
+                        System.out.print("Enter the make and model of the airplane to modify (e.g., 'make' 'model'): ");
+                        String airplaneInput = input.nextLine();
+                        if (airplaneInput.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
 
-                        System.out.print("Enter the model of the airplane to modify: ");
-                        String airplaneModelToModify = input.nextLine();
-                        if (airplaneModelToModify.equalsIgnoreCase("cancel")) {
-                            System.out.println("\nReturning to the Airplane Database menu...");
-                            break;
+                        String[] airplaneParts = airplaneInput.split(" ", 2);
+                        if (airplaneParts.length < 2) {
+                            System.out.println("*** Invalid input. Please provide both make and model. Try again.");
+                            continue; // Prompt the user again
                         }
 
+                        String airplaneMakeToModify = airplaneParts[0];
+                        String airplaneModelToModify = airplaneParts[1];
                         indexToModify = AirMan.searchAirplane(airplaneMakeToModify, airplaneModelToModify);
                         if (indexToModify == -1) {
-                            System.out.println("The airplane does not exist in the database. Please try again.");
+                            System.out.println("*** The airplane does not exist in the database. Please try again.");
                         } else {
                             System.out.println("Airplane found!");
                             break;
@@ -588,30 +590,39 @@ public class sysmain {
 
                     // Modify the airplane
                     AirMan.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate, indexToModify);
+                    System.out.println("Airplane modified successfully!");
                     break;
 
                 case "4":
                     // View a Single Airplane
-                    System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
-                    System.out.print("\nEnter the make and model of the airplane to view (e.g., 'Boeing 747'): ");
-                    String airplaneInput = input.nextLine();
-                    if (airplaneInput.equalsIgnoreCase("cancel")) {
-                        System.out.println("\nReturning to the Airplane Database menu...");
-                        break;
+                    System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.\n");
+                    while (true) {
+                        System.out.print("Enter the make and model of the airplane to view (e.g., 'make' 'model'): ");
+                        String airplaneInput = input.nextLine();
+                        if (airplaneInput.equalsIgnoreCase("cancel")) {
+                            System.out.println("\nReturning to the Airplane Database menu...");
+                            break;
+                        }
+                
+                        String[] airplaneParts = airplaneInput.split(" ", 2);
+                        if (airplaneParts.length < 2) {
+                            System.out.println("*** Invalid input. Please provide both make and model. Try again.");
+                            continue; // Prompt the user again
+                        }
+                
+                        String airplaneMakeToView = airplaneParts[0];
+                        String airplaneModelToView = airplaneParts[1];
+                        int airplaneIndex = AirMan.searchAirplane(airplaneMakeToView, airplaneModelToView);
+                        if (airplaneIndex == -1) {
+                            System.out.println("*** The airplane does not exist in the database. Please try again.");
+                            continue; // Prompt the user again
+                        }
+                
+                        // Display the airplane details
+                        System.out.println();
+                        AirMan.displayAirplane(airplaneIndex);
+                        break; // Exit the loop after successfully displaying the airplane
                     }
-                    String[] airplaneParts = airplaneInput.split(" ", 2);
-                    if (airplaneParts.length < 2) {
-                        System.out.println("Invalid airplane input. Returning to the menu.");
-                        break;
-                    }
-                    String airplaneMakeToView = airplaneParts[0];
-                    String airplaneModelToView = airplaneParts[1];
-                    int airplaneIndex = AirMan.searchAirplane(airplaneMakeToView, airplaneModelToView);
-                    if (airplaneIndex == -1) {
-                        System.out.println("The airplane does not exist. Please try again.");
-                        break;
-                    }
-                    AirMan.displayAirplane(airplaneIndex);
                     break;
 
                 case "5":
