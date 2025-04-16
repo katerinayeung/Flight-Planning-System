@@ -62,8 +62,7 @@ public class sysmain {
             }
         }
     }
-   
-    // Flight Planning
+
     private static void planFlight(Passenger user, Scanner input) {
         // Initializes Airport and Airplane Managers
         AirportManager airportManager = new AirportManager(new Airport("", "", 0, 0, 0, ""));
@@ -113,7 +112,7 @@ public class sysmain {
         String airplaneModel = airplaneParts[1];
         int airplaneIndex = airplaneManager.searchAirplane(airplaneMake, airplaneModel);
         if (airplaneIndex == -1) {
-            System.out.println("*** The airplane does not exist. Returning to the main menu.");
+            System.out.println("The airplane does not exist. Returning to the main menu.");
             return;
         }
         Airplane selectedAirplane = airplaneManager.getAirplane(airplaneIndex);
@@ -133,8 +132,7 @@ public class sysmain {
     
         System.out.println("Returning to the main menu...");
     }
-    
-    //Manage Airport Database
+
     private static void manageAirportDatabase(Scanner input) {
         AirportManager airportManager = new AirportManager(new Airport("", "", 0, 0, 0, ""));
         System.out.println("\nManaging Airport Database...");
@@ -153,26 +151,23 @@ public class sysmain {
                         System.err.println("\nInvalid ICAO code. It must be a non-empty string of 4 characters.");
                         break;
                     }
-                    // Check if the airport already exists
                     if (airportManager.searchAirport(icao) != -1) {
+                        // Check if the airport already exists
                         System.out.println("The airport already exists. Please try again.");
                         break; // Restart the loop
                     }
-                    
                     System.out.print("Enter Name: ");
                     String name = input.nextLine();
                     if (name == null || name.isEmpty()) {
                         System.err.println("\nInvalid airport name. It must be a non-empty string.");
                         break;
                     }
-                    
                     System.out.print("Enter Latitude: ");
                     double latitude = input.nextDouble();
                     if (latitude < -90 || latitude > 90) {
                         System.err.println("\nInvalid latitude. It must be between -90 and 90.");
                         break;
                     }
-                    
                     System.out.print("Enter Longitude: ");
                     double longitude = input.nextDouble();
                     if (longitude < -180 || longitude > 180) {
@@ -180,7 +175,6 @@ public class sysmain {
                         break;
                     }
                     input.nextLine(); // Consume newline
-                    
                     System.out.print("Enter Communication Frequencies: ");
                     double commFrequencies = input.nextDouble();
                     if (commFrequencies < 0) {
@@ -188,27 +182,18 @@ public class sysmain {
                         break;
                     }
                     input.nextLine(); // Consume newline
-                    
-                    String fuelTypes;
-                    while (true) {
-                        System.out.print("Enter Fuel Types: ");
-                        fuelTypes = input.nextLine();
-                        if (fuelTypes == null || fuelTypes.isEmpty()) {
-                            System.err.println("\nInvalid fuel types. It must be a non-empty string.");
-                            continue; 
-                        }
-                        if (fuelTypes.equalsIgnoreCase("JA-a") || fuelTypes.equalsIgnoreCase("AvGas")) {
-                            break; 
-                        } else {
-                            System.out.println("*** Invalid type. Please enter 'JA-a' or 'AvGas'.");
-                        }
+                    System.out.print("Enter Fuel Types: ");
+                    String fuelTypes = input.nextLine();
+                    if (fuelTypes == null || fuelTypes.isEmpty()) {
+                        System.err.println("\nInvalid fuel types. It must be a non-empty string.");
+                        break;
                     }
                     
                     airportManager.addAirport(icao, name, latitude, longitude, commFrequencies, fuelTypes);
                     System.out.println("Airport added successfully!");
                     break;
-                
                 case 2:
+                   
                     // Remove an Airport
                     System.out.print("\nEnter the ICAO of the airport to remove: ");
                     String airportIcao = input.nextLine(); // Correctly read the ICAO
@@ -280,19 +265,11 @@ public class sysmain {
                             System.err.println("Invalid communication frequencies. It must be a non-negative value.");
                             break;
                         }
-                      
-                        while (true) {
-                            System.out.print("Enter Fuel Types: ");
-                            fuelTypes = input.nextLine();
-                            if (fuelTypes == null || fuelTypes.isEmpty()) {
-                                System.err.println("\nInvalid fuel types. It must be a non-empty string.");
-                                continue; 
-                            }
-                            if (fuelTypes.equalsIgnoreCase("JA-a") || fuelTypes.equalsIgnoreCase("AvGas")) {
-                                break; 
-                            } else {
-                                System.out.println("*** Invalid type. Please enter 'JA-a' or 'AvGas'.");
-                            }
+                        System.out.print("Enter Fuel Types: ");
+                        fuelTypes = input.nextLine();
+                        if (fuelTypes == null || fuelTypes.isEmpty()) {
+                            System.err.println("Invalid fuel types. It must be a non-empty string.");
+                            break;
                         }
 
                    airportManager.modifyAirport(icao, name, latitude, longitude, commFrequencies, fuelTypes, APindexToModify);
@@ -344,30 +321,24 @@ public class sysmain {
 
             switch (choice) {
                 case "1":
-                // ADD AN AIRPLANE
+                    // Add an Airplane
                     System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
                     while (true) {
-                        // Make
                         System.out.print("\nEnter the make of the airplane: ");
                         String make = input.nextLine();
                         if (make.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
-                        //Model
+
                         System.out.print("Enter the model of the airplane: ");
                         String model = input.nextLine();
                         if (model.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
-                        //check if the airplane already exists
-                        if (AirMan.searchAirplane(make, model) != -1) {
-                            System.out.println("*** The airplane already exists in the database. Please try again.");
-                            continue; // Restart the loop
-                        }
 
-                        //Type
+                        // Validate the type
                         String type;
                         while (true) {
                             System.out.print("Enter the type of the airplane (Jet, Prop, or Turboprop): ");
@@ -382,10 +353,11 @@ public class sysmain {
                                 System.out.println("*** Invalid type. Please enter 'Jet', 'Prop', or 'Turboprop'.");
                             }
                         }
+                        if (type.equalsIgnoreCase("cancel")) break;
 
                         double fuelCapacity = 0, cruiseSpeed = 0, fuelBurnRate = 0;
 
-                        //Fuel Capacity
+                        // Validate Fuel Capacity
                         while (true) {
                             try {
                                 System.out.print("Enter the fuel capacity of the airplane: ");
@@ -399,18 +371,14 @@ public class sysmain {
                                     System.out.println("*** Fuel capacity cannot be negative. Please try again.");
                                     continue;
                                 }
-                                if (fuelCapacity == 0) {
-                                            System.out.println("*** Fuel capacity cannot be zero. Please try again.");
-                                            continue;
-                                        }
                                 break; // Valid input
                             } catch (NumberFormatException e) {
                                 System.out.println("*** Invalid input. Please enter a numeric value for fuel capacity.");
                             }
                         }
-                        
+                        if (fuelCapacity == 0) break;
 
-                        //Cruise Speed
+                        // Validate Cruise Speed
                         while (true) {
                             try {
                                 System.out.print("Enter the cruise speed of the airplane: ");
@@ -424,18 +392,14 @@ public class sysmain {
                                     System.out.println("*** Cruise speed cannot be negative. Please try again.");
                                     continue;
                                 }
-                                if (cruiseSpeed == 0) {
-                                            System.out.println("*** Cruise speed cannot be zero. Please try again.");
-                                            continue;
-                                        }
                                 break; // Valid input
                             } catch (NumberFormatException e) {
                                 System.out.println("*** Invalid input. Please enter a numeric value for cruise speed.");
                             }
                         }
-                 
+                        if (cruiseSpeed == 0) break;
 
-                        //Fuel Burn Rate
+                        // Validate Fuel Burn Rate
                         while (true) {
                             try {
                                 System.out.print("Enter the fuel burn rate of the airplane: ");
@@ -449,16 +413,12 @@ public class sysmain {
                                     System.out.println("*** Fuel burn rate cannot be negative. Please try again.");
                                     continue;
                                 }
-                                if (fuelBurnRate == 0) {
-                                            System.out.println("*** Fuel burn rate cannot be zero. Please try again.");
-                                            continue;
-                                        }
                                 break; // Valid input
                             } catch (NumberFormatException e) {
                                 System.out.println("*** Invalid input. Please enter a numeric value for fuel burn rate.");
                             }
                         }
-                        
+                        if (fuelBurnRate == 0) break;
 
                         // Check if the airplane already exists
                         if (AirMan.searchAirplane(make, model) != -1) {
@@ -473,7 +433,7 @@ public class sysmain {
                     break;
 
                 case "2":
-                //REMOVE AN AIRPLANE
+                    // Remove an Airplane
                     System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
                     while (true) {
                         System.out.print("\nEnter the make of the airplane to remove: ");
@@ -489,10 +449,10 @@ public class sysmain {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
-                        // Check if the airplane exists
+
                         int index = AirMan.searchAirplane(airplaneMake, airplaneModel);
                         if (index == -1) {
-                            System.out.println("*** The airplane does not exist in the database. Please try again.");
+                            System.out.println("The airplane does not exist in the database. Please try again.");
                             continue;
                         }
 
@@ -502,10 +462,9 @@ public class sysmain {
                     break;
 
                 case "3":
-                // MODIFY AN AIRPLANE
+                    // Modify an Airplane
                     System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
                     int indexToModify = -1;
-                    // Prompt for the airplane to modify
                     while (true) {
                         System.out.print("\nEnter the make of the airplane to modify: ");
                         String airplaneMakeToModify = input.nextLine();
@@ -520,32 +479,32 @@ public class sysmain {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
                         }
-                        // Check if the airplane exists
+
                         indexToModify = AirMan.searchAirplane(airplaneMakeToModify, airplaneModelToModify);
                         if (indexToModify == -1) {
-                            System.out.println("*** The airplane does not exist in the database. Please try again.");
+                            System.out.println("The airplane does not exist in the database. Please try again.");
                         } else {
                             System.out.println("Airplane found!");
                             break;
                         }
                     }
+                    if (indexToModify == -1) break;
 
-                    //Input the modified infomration
-                    //Make
+                    // Modify the airplane
                     System.out.print("\nEnter the new make of the airplane: ");
                     String make = input.nextLine();
                     if (make.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airplane Database menu...");
                         break;
                     }
-                    //Model
+
                     System.out.print("Enter the new model of the airplane: ");
                     String model = input.nextLine();
                     if (model.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airplane Database menu...");
                         break;
                     }
-                    //Type
+
                     String type;
                     while (true) {
                         System.out.print("Enter the new type of the airplane (Jet, Prop, or Turboprop): ");
@@ -555,15 +514,16 @@ public class sysmain {
                             break;
                         }
                         if (type.equalsIgnoreCase("Jet") || type.equalsIgnoreCase("Prop") || type.equalsIgnoreCase("Turboprop")) {
-                            break; 
+                            break; // Valid type
                         } else {
                             System.out.println("*** Invalid type. Please enter 'Jet', 'Prop', or 'Turboprop'.");
                         }
                     }
+                    if (type.equalsIgnoreCase("cancel")) break;
 
                     double fuelCapacity = 0, cruiseSpeed = 0, fuelBurnRate = 0;
 
-                    //Fuel Capacity
+                    // Validate Fuel Capacity
                     while (true) {
                         try {
                             System.out.print("Enter the new fuel capacity of the airplane: ");
@@ -577,18 +537,14 @@ public class sysmain {
                                 System.out.println("*** Fuel capacity cannot be negative. Please try again.");
                                 continue;
                             }
-                            if (fuelCapacity == 0) {
-                                System.out.println("*** Fuel capacity cannot be zero. Please try again.");
-                                continue;
-                            }
-                            break; // Valid input
+                            break;
                         } catch (NumberFormatException e) {
                             System.out.println("*** Invalid input. Please enter a numeric value for fuel capacity.");
                         }
                     }
-                    
+                    if (fuelCapacity == 0) break;
 
-                    //Cruise Speed
+                    // Validate Cruise Speed
                     while (true) {
                         try {
                             System.out.print("Enter the new cruise speed of the airplane: ");
@@ -602,17 +558,14 @@ public class sysmain {
                                 System.out.println("*** Cruise speed cannot be negative. Please try again.");
                                 continue;
                             }
-                            if (cruiseSpeed == 0) {
-                                System.out.println("*** Cruise speed cannot be zero. Please try again.");
-                                continue;
-                            }
-                            break; // Valid input
+                            break;
                         } catch (NumberFormatException e) {
                             System.out.println("*** Invalid input. Please enter a numeric value for cruise speed.");
                         }
                     }
+                    if (cruiseSpeed == 0) break;
 
-                    //Fuel Burn Rate
+                    // Validate Fuel Burn Rate
                     while (true) {
                         try {
                             System.out.print("Enter the new fuel burn rate of the airplane: ");
@@ -626,22 +579,19 @@ public class sysmain {
                                 System.out.println("*** Fuel burn rate cannot be negative. Please try again.");
                                 continue;
                             }
-                            if (fuelBurnRate == 0) {
-                                System.out.println("*** Fuel burn rate cannot be zero. Please try again.");
-                                continue;
-                            }
-                            break; // Valid input
+                            break;
                         } catch (NumberFormatException e) {
                             System.out.println("*** Invalid input. Please enter a numeric value for fuel burn rate.");
                         }
                     }
+                    if (fuelBurnRate == 0) break;
 
                     // Modify the airplane
                     AirMan.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate, indexToModify);
                     break;
 
                 case "4":
-                // VIEW A SINGLE AIRPLANE
+                    // View a Single Airplane
                     System.out.println("\nYou can type 'cancel' at any time to return to the Airplane Database menu.");
                     System.out.print("\nEnter the make and model of the airplane to view (e.g., 'Boeing 747'): ");
                     String airplaneInput = input.nextLine();
@@ -658,21 +608,21 @@ public class sysmain {
                     String airplaneModelToView = airplaneParts[1];
                     int airplaneIndex = AirMan.searchAirplane(airplaneMakeToView, airplaneModelToView);
                     if (airplaneIndex == -1) {
-                        System.out.println("*** The airplane does not exist. Please try again.");
+                        System.out.println("The airplane does not exist. Please try again.");
                         break;
                     }
                     AirMan.displayAirplane(airplaneIndex);
                     break;
 
                 case "5":
-                // VIEW ALL AIRPLANES
+                    // View All Airplanes
                     System.out.println("\n--- All Airplanes in the Database ---");
                     AirMan.displayAllAirplanes();
                     System.out.println("\nReturning to the Airplane Database menu...");
                     break;
 
                 case "6":
-                // RETURN TO MAIN MENU
+                    // Return to the Main Menu
                     System.out.println("Returning to the Main Menu...");
                     return;
 
