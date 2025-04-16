@@ -7893,7 +7893,7 @@ FVMV,Masvingo Airport,-20.0553,30.8591,134.0,AvGas
 FVWN,Hwange National Park Airport,-18.6299,27.021,125.0,JA-a
 FVFA,Victoria Falls Airport,-18.0959,25.839,132.0,AvGas
 FVTL,Thornhill Air Base,-19.4364,29.8619,125.0,JA-a
-TEST,testbase,1.0,1.0,1.0,JA-a
+test,testing,90.0,90.0,90.0,ja-a
 FVWT,Hwange Town Airport,-18.363,26.5198,136.0,JA-a
 
 good,mornign,10.0,-10.0,100.0,jj
