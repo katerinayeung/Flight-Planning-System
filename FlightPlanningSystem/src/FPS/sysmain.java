@@ -70,14 +70,25 @@ public class sysmain {
         System.out.println("\nPlanning a flight...");
     
         // Select a starting airport
-        System.out.print("Enter the ICAO code of the starting airport: ");
-        String startIcao = input.nextLine();
-        int startIndex = airportManager.searchAirport(startIcao);
-        if (startIndex == -1) {
-            System.out.println("The starting airport does not exist. Returning to the main menu.");
-            return;
+        String startIcao = "";
+        Airport startAirport = null; // Declare startAirport
+        while (true) {
+            System.out.print("Enter the ICAO code of the starting airport: ");
+            startIcao = input.nextLine();
+            int startIndex = airportManager.searchAirport(startIcao);
+            if (startIcao.isEmpty() || startIcao.length() != 4 || ! startIcao.matches("[A-Za-z]+")) {
+                System.out.println("*** Invalid ICAO code. It must be a non-empty string of 4 alphabetic characters.");
+                continue;
+            }
+            if (startIndex == -1) {
+                System.out.println("*** The starting airport does not exist. Please try again.");
+                continue; // Ask the user again
+            }
+            
+            startAirport = airportManager.getAirport(startIndex); // Initialize startAirport
+            System.out.println("Starting airport selected: " + startAirport.getName() + " (" + startAirport.getIcao() + ")");
+            break; // Valid input, exit the loop
         }
-        Airport startAirport = airportManager.getAirport(startIndex);
     
         // Select destination airports
         List<Airport> destinationAirports = new ArrayList<>();
@@ -87,12 +98,19 @@ public class sysmain {
             if (destinationIcao.equalsIgnoreCase("done")) {
                 break;
             }
+            if (destinationIcao.isEmpty() || destinationIcao.length() != 4 || ! destinationIcao.matches("[A-Za-z]+")) {
+                System.out.println("*** Invalid ICAO code. It must be a non-empty string of 4 alphabetic characters.");
+                continue; // Ask the user again
+            }
+            // Check if the destination airport already exists in the list
             int destinationIndex = airportManager.searchAirport(destinationIcao);
             if (destinationIndex == -1) {
                 System.out.println("The destination airport does not exist. Please try again.");
-            } else {
-                destinationAirports.add(airportManager.getAirport(destinationIndex));
+                continue;
             }
+            destinationAirports.add(airportManager.getAirport(destinationIndex));
+            System.out.println("Destination airport added: " + destinationAirports.get(destinationAirports.size() - 1).getName() + " (" + destinationIcao + ") ");
+            
         }
     
         if (destinationAirports.isEmpty()) {
@@ -101,21 +119,26 @@ public class sysmain {
         }
     
         // Select an airplane
-        System.out.print("Enter the make and model of the airplane you want to use (e.g., 'Boeing 747'): ");
-        String airplaneInput = input.nextLine();
-        String[] airplaneParts = airplaneInput.split(" ", 2);
-        if (airplaneParts.length < 2) {
-            System.out.println("Invalid airplane input. Returning to the main menu.");
-            return;
+        Airplane selectedAirplane = null; // Declare the variable
+        while (true) {
+            System.out.print("Enter the make and model of the airplane you want to use (e.g., 'Boeing 737'): ");
+            String airplaneInput = input.nextLine();
+            String[] airplaneParts = airplaneInput.split(" ", 2);
+            if (airplaneParts.length < 2) {
+                System.out.println("*** Invalid airplane input. Please provide both make and model. Try again.");
+                continue; // Prompt the user again
+            }
+            String airplaneMake = airplaneParts[0];
+            String airplaneModel = airplaneParts[1];
+            int airplaneIndex = airplaneManager.searchAirplane(airplaneMake, airplaneModel);
+            if (airplaneIndex == -1) {
+                System.out.println("*** The airplane does not exist in the database. Please try again.");
+                continue; // Prompt the user again
+            }
+            selectedAirplane = airplaneManager.getAirplane(airplaneIndex); // Initialize the variable
+            System.out.println("Airplane selected: " + selectedAirplane.getMake() + " " + selectedAirplane.getModel());
+            break; // Valid input, exit the loop
         }
-        String airplaneMake = airplaneParts[0];
-        String airplaneModel = airplaneParts[1];
-        int airplaneIndex = airplaneManager.searchAirplane(airplaneMake, airplaneModel);
-        if (airplaneIndex == -1) {
-            System.out.println("The airplane does not exist. Returning to the main menu.");
-            return;
-        }
-        Airplane selectedAirplane = airplaneManager.getAirplane(airplaneIndex);
     
         // Create and process the flight
         try {
@@ -335,28 +358,38 @@ public class sysmain {
 
                 // Input the modified information
                 System.out.println("\nEnter the new details for the airport:");
-                System.out.print("Enter the new ICAO code: ");
-                String newIcao = input.nextLine();
-                if (newIcao.equalsIgnoreCase("cancel")) {
-                    System.out.println("\nReturning to the Airport Database menu...");
-                    break;
+                //new ICAO code
+               String newIcao = "";
+               while (true) {
+                    System.out.print("Enter the new ICAO code: ");
+                    newIcao = input.nextLine();
+                    if (newIcao.equalsIgnoreCase("cancel")) {
+                        System.out.println("\nReturning to the Airport Database menu...");
+                        break;
+                    }
+                    if (newIcao.isEmpty() || newIcao.length() != 4 || !newIcao.matches("[A-Za-z]+")) {
+                        System.out.println("*** Invalid ICAO code. It must be a non-empty string of 4 alphabetic characters. Please try again.");
+                        continue; // Prompt the user again
+                    }
+                    break; // Valid input
                 }
-                if (newIcao.isEmpty() || newIcao.length() != 4 || !newIcao.matches("[A-Za-z]+")) {
-                    System.out.println("*** Invalid ICAO code. It must be a non-empty string of 4 alphabetic characters.");
-                    break;
+                //Name
+                String newName = "";
+                while (true) {
+                    System.out.print("Enter the new name of the airport: ");
+                    newName = input.nextLine().trim();
+                    if (newName.equalsIgnoreCase("cancel")) {
+                        System.out.println("\nReturning to the Airport Database menu...");
+                        break;
+                    }
+                    if (newName.isEmpty()) {
+                        System.out.println("*** Invalid airport name. It must be a non-empty string. Please try again.");
+                        continue; // Prompt the user again
+                    }
+                    break; // Valid input
                 }
-
-                System.out.print("Enter the new name of the airport: ");
-                String newName = input.nextLine();
-                if (newName.equalsIgnoreCase("cancel")) {
-                    System.out.println("\nReturning to the Airport Database menu...");
-                    break;
-                }
-                if (newName.isEmpty()) {
-                    System.out.println("*** Invalid airport name. It must be a non-empty string.");
-                    break;
-                }
-
+                
+                // Latitude and Longitude
                 double newLatitude = 0;
                 while (true) {
                     try {
@@ -379,6 +412,7 @@ public class sysmain {
                 }
                 if (cancel) break;
 
+                // Longitude
                 double newLongitude = 0;
                 while (true) {
                     try {
@@ -401,6 +435,7 @@ public class sysmain {
                 }
                 if (cancel) break;
 
+                // Communication Frequencies
                 double newCommFrequencies = 0;
                 while (true) {
                     try {
@@ -423,6 +458,7 @@ public class sysmain {
                 }
                 if (cancel) break;
 
+                // Fuel Types
                 String newFuelTypes;
                 while (true) {
                     System.out.print("Enter the new fuel types of the airport (JA-a or AvGas): ");
