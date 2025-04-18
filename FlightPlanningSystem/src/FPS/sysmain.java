@@ -195,17 +195,22 @@ public class sysmain {
                     }
 
                     // Name
-                    System.out.print("Enter the name of the airport: ");
-                    String name = input.nextLine();
-                    if (name.equalsIgnoreCase("cancel")) {
-                        System.out.println("\nReturning to the Airport Database menu...");
-                        cancel = true;
-                        break;
+                    String name = "";
+                    while (true) {
+                        System.out.print("Enter the name of the airport: ");
+                        name = input.nextLine().trim();
+                        if (name.equalsIgnoreCase("cancel")) {
+                            System.out.println("\nReturning to the Airport Database menu...");
+                            cancel = true; 
+                            break; 
+                        }
+                        if (name.isEmpty()) {
+                            System.out.println("*** Invalid airport name. It must be a non-empty string. Please try again.");
+                            continue; 
+                        }
+                        break; 
                     }
-                    if (name.isEmpty()) {
-                        System.out.println("*** Invalid airport name. It must be a non-empty string.");
-                        continue;
-                    }
+                    if (cancel) break;
 
                     // Latitude
                     double latitude = 0;
@@ -365,6 +370,7 @@ public class sysmain {
                     newIcao = input.nextLine();
                     if (newIcao.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airport Database menu...");
+                        cancel = true;
                         break;
                     }
                     if (newIcao.isEmpty() || newIcao.length() != 4 || !newIcao.matches("[A-Za-z]+")) {
@@ -373,6 +379,8 @@ public class sysmain {
                     }
                     break; // Valid input
                 }
+                if (cancel) break;
+
                 //Name
                 String newName = "";
                 while (true) {
@@ -380,6 +388,7 @@ public class sysmain {
                     newName = input.nextLine().trim();
                     if (newName.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airport Database menu...");
+                        cancel= true;
                         break;
                     }
                     if (newName.isEmpty()) {
@@ -388,6 +397,7 @@ public class sysmain {
                     }
                     break; // Valid input
                 }
+                if (cancel) break;
                 
                 // Latitude and Longitude
                 double newLatitude = 0;
@@ -550,7 +560,7 @@ public class sysmain {
                     String make;
                     while (true) {
                         System.out.print("Enter the make of the airplane: ");
-                        make = input.nextLine();
+                        make = input.nextLine().trim();
                         if (make.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
@@ -567,7 +577,7 @@ public class sysmain {
                     String model;
                     while (true) {
                         System.out.print("Enter the model of the airplane: ");
-                        model = input.nextLine();
+                        model = input.nextLine().trim();
                         if (model.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
@@ -737,8 +747,8 @@ public class sysmain {
                     // Make
                     String make;
                     while (true) {
-                        System.out.print("Enter the make of the airplane: ");
-                        make = input.nextLine();
+                        System.out.print("Enter the new make of the airplane: ");
+                        make = input.nextLine().trim();
                         if (make.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
@@ -754,8 +764,8 @@ public class sysmain {
                     // Model
                     String model;
                     while (true) {
-                        System.out.print("Enter the model of the airplane: ");
-                        model = input.nextLine();
+                        System.out.print("Enter the new model of the airplane: ");
+                        model = input.nextLine().trim();
                         if (model.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
                             break;
