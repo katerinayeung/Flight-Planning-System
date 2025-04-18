@@ -3,7 +3,7 @@
 A backend-focused flight planning system project developed in **Java**, built as part of a semester-long software engineering course using a **plan-driven development process**.
 
 ## 🚀 Features
-- Flight route planning based on user input (ICAO or location name substring)
+- Flight route planning based on user input 
 - Auto-calculation of fuel usage, headings, time, and required refueling stops
 - Custom databases for airports and airplanes with full CRUD operations
 - Edge case handling for unreachable routes or lack of fuel facilities
@@ -11,7 +11,6 @@ A backend-focused flight planning system project developed in **Java**, built as
 - Fully text-based — no UI, runs entirely in the console
 
 ## 📄 Tools & Tech
-- Java (OOP & file-based data management)
 - **Language:** Java  
 - **Methodology:** Plan-Driven Development
 - **Paradigm:** Object-Oriented Programming (OOP)  
