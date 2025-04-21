@@ -217,7 +217,7 @@ public class AirplaneManager extends Airplane {
             int index = 0;
     
             // Print table header
-            System.out.printf("%-15s %-15s %-10s %-15s %-15s %-15s%n", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
+            System.out.printf("%-15s %-15s %-10s %-15s %-20s %-15s%n", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
             System.out.println("-----------------------------------------------------------------------------------------------");
     
             // Iterate through the file line by line
@@ -253,7 +253,7 @@ public void displayAirplane(int index) {
         int currentIndex = 0;
 
         // Print table header
-        System.out.printf("%-15s %-15s %-10s %-15s %-15s %-15s%n", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
+        System.out.printf("%-15s %-15s %-10s %-15s %-20s %-15s%n", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
         System.out.println("-----------------------------------------------------------------------------------------------");
 
         // Read the file line by line
