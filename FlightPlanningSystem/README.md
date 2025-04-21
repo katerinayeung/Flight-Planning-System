@@ -1,18 +1,37 @@
-## Getting Started
+# ✈️ Flight Planning System
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+A backend-focused flight planning system project developed in **Java**, built as part of a semester-long software engineering course using a **plan-driven development process**.
 
-## Folder Structure
+## 🚀 Features
+- Flight route planning based on user input 
+- Auto-calculation of fuel usage, headings, time, and required refueling stops
+- Custom databases for airports and airplanes with full CRUD operations
+- Edge case handling for unreachable routes or lack of fuel facilities
+- Structured documentation: class diagrams, data dictionary, test plans, and user manual
+- Fully text-based — no UI, runs entirely in the console
 
-The workspace contains two folders by default, where:
+## 📄 Tools & Tech
+- **Language:** Java  
+- **Methodology:** Plan-Driven Development
+- **Paradigm:** Object-Oriented Programming (OOP)  
+- **Data Handling:** File-based storage and retrieval
+- **IDE Recommended:** Visual Studio Code
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## ▶️ How to Run
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+1. Clone or download the repository.
+2. Open the project in your preferred Java IDE.
+3. Navigate to:  
+   **`FlightPlanningSystem/src/FPS/sysmain.java`**
+4. Compile and run `sysmain.java`.
+5. The program will launch in the **console** and prompt you to **insert your name** to begin planning a flight.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+> ⚠️ **Note**: This software is not to be used for flight planning or navigational purposes.
 
-## Dependency Management
+## 📅 Developed For
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+**CSCI A360 – Software Engineering**  
+University of South Carolina Aiken  
+**Spring 2025**
+
+
