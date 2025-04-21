@@ -48,25 +48,32 @@ public class Flight {
     public List<Airport> determineLayovers(List<Airport> mandatoryStops) throws Exception {
         Airport currentAirport = start;
         totalDistance = 0.0; // Reset total distance
-
+        List<Airport> visitedAirports = new ArrayList<>(); // Track visited airports
+        visitedAirports.add(currentAirport);
+    
         for (Airport destination : mandatoryStops) {
             double remainingDistance = calculateDistance(currentAirport, destination);
-
+    
             while (remainingDistance > airplane.calculateRange()) {
-                // Get all airports within the airplane's range
+                List<Airport> allAirports = AirportManager.getAllAirports();
                 List<Airport> possibleStops = new ArrayList<>();
-                for (Airport airport : mandatoryStops) {
+                double previousRemainingDistance = remainingDistance; // Track the previous remaining distance
+    
+                // Find all possible refueling stops within range
+                for (Airport airport : allAirports) {
                     if (!airport.equals(currentAirport) &&
                         hasCorrectFuel(airport, airplane.getType()) &&
-                        calculateDistance(currentAirport, airport) <= airplane.calculateRange()) {
+                        calculateDistance(currentAirport, airport) <= airplane.calculateRange() &&
+                        !visitedAirports.contains(airport)) {
                         possibleStops.add(airport);
                     }
                 }
-
+    
+                // If no possible stops are found, terminate the loop and return an error
                 if (possibleStops.isEmpty()) {
-                    throw new Exception("Flight impossible: No refueling airports available.");
+                    throw new Exception("No refueling airports available within range. Flight is impossible.");
                 }
-
+    
                 // Select the airport that minimizes the remaining distance to the destination
                 Airport bestStop = null;
                 double minRemainingDistance = Double.MAX_VALUE;
@@ -77,20 +84,27 @@ public class Flight {
                         bestStop = airport;
                     }
                 }
-
+    
                 // Add the selected airport as a layover
                 layovers.add(bestStop);
+                visitedAirports.add(bestStop);
                 totalDistance += calculateDistance(currentAirport, bestStop);
                 currentAirport = bestStop;
                 remainingDistance = calculateDistance(currentAirport, destination);
+    
+                // Check if remaining distance did not change
+                if (remainingDistance == previousRemainingDistance) {
+                    throw new Exception("No refueling airports available within range. Flight is impossible.");
+                    //break; // Exit the loop to prevent infinite iteration
+                }
             }
-
+    
             // Add the mandatory destination as a stop
             layovers.add(destination);
             totalDistance += calculateDistance(currentAirport, destination);
             currentAirport = destination;
         }
-
+    
         return layovers;
     }
 

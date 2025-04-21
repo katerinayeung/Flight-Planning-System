@@ -202,7 +202,7 @@ public void removeAirport(int index) {
     }
 
     // Return a list of all airports in the database
-    public List<Airport> getAllAirports() {
+    public static List<Airport> getAllAirports() {
         List<Airport> airports = new ArrayList<>();
         String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat";
     
