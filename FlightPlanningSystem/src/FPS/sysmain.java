@@ -1,9 +1,9 @@
 /* sysmain.java
- * Purpose: 
- * 
- * 
+ * Contains the main method for the Flight Planning System (FPS).
+ * This class serves as the entry point for the application and handles user interactions.
+ * It allows users to plan flights, manage airport and airplane databases, and view created flight plans.
+ * Selections are made through a console menu system.
  */
-
 package FPS;
 
 import java.util.*;
@@ -73,6 +73,7 @@ public class sysmain {
         String startIcao = "";
         Airport startAirport = null; // Declare startAirport
         while (true) {
+            // Searches for the starting airport in the database using inputted ICAO
             System.out.print("Enter the ICAO code of the starting airport: ");
             startIcao = input.nextLine();
             int startIndex = airportManager.searchAirport(startIcao);
@@ -93,8 +94,10 @@ public class sysmain {
         // Select destination airports
         List<Airport> destinationAirports = new ArrayList<>();
         while (true) {
+            // Searches for the destination airports in the database using inputted ICAO
             System.out.print("Enter the ICAO code of a destination airport (or type 'done' to finish): ");
             String destinationIcao = input.nextLine();
+            // Escape condition for 'done'
             if (destinationIcao.equalsIgnoreCase("done")) {
                 break;
             }
@@ -108,11 +111,12 @@ public class sysmain {
                 System.out.println("The destination airport does not exist. Please try again.");
                 continue;
             }
+            // Add the destination airport to the list
             destinationAirports.add(airportManager.getAirport(destinationIndex));
             System.out.println("Destination airport added: " + destinationAirports.get(destinationAirports.size() - 1).getName() + " (" + destinationIcao + ") ");
             
         }
-    
+        // If no destination airports were selected, return to the main menu
         if (destinationAirports.isEmpty()) {
             System.out.println("No destination airports were selected. Returning to the main menu.");
             return;
@@ -150,12 +154,13 @@ public class sysmain {
             FlightPlan flightPlan = new FlightPlan(flight);
             flightPlan.displayPlan();
         } catch (Exception e) {
-            System.out.println("An error occurred while planning the flight: " + e.getMessage());
+            // Handle any exceptions that occur during flight planning
+            System.out.println("\nAn error occurred while planning the flight: " + e.getMessage());
         }
     
-        System.out.println("Returning to the main menu...");
+        System.out.println("\nReturning to the main menu...");
     }
-
+    // Uses AirportManager to manage the airport database
     private static void manageAirportDatabase(Scanner input) {
     // Initializes Airport Manager
     AirportManager airportManager = new AirportManager(new Airport("", "", 0, 0, 0, ""));
@@ -174,7 +179,7 @@ public class sysmain {
 
         switch (choice) {
             case "1":
-                // ADD AN AIRPORT
+                // Add an airport
                 System.out.println("\nYou can type 'cancel' at any time to return to the Airport Database menu.\n");
                 while (true) {
                     // ICAO
@@ -183,15 +188,15 @@ public class sysmain {
                     if (icao.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airport Database menu...");
                         cancel = true;
-                        break;
+                        break; // Exit the loop
                     }
                     if (icao.isEmpty() || icao.length() != 4 || !icao.matches("[A-Za-z]+")) {
                         System.out.println("*** Invalid ICAO code. It must be a non-empty string of 4 alphabetic characters.");
-                        continue;
+                        continue; // Prompt the user again
                     }
                     if (airportManager.searchAirport(icao) != -1) {
                         System.out.println("*** The airport already exists in the database. Please try again.");
-                        continue;
+                        continue; // Prompt the user again
                     }
 
                     // Name
@@ -202,11 +207,11 @@ public class sysmain {
                         if (name.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airport Database menu...");
                             cancel = true; 
-                            break; 
+                            break; // Exit the loop
                         }
                         if (name.isEmpty()) {
                             System.out.println("*** Invalid airport name. It must be a non-empty string. Please try again.");
-                            continue; 
+                            continue; // Prompt the user again
                         }
                         break; 
                     }
@@ -221,12 +226,12 @@ public class sysmain {
                             if (inputLatitude.equalsIgnoreCase("cancel")) {
                                 System.out.println("\nReturning to the Airport Database menu...");
                                 cancel = true;
-                                break;
+                                break; // Exit the loop
                             }
                             latitude = Double.parseDouble(inputLatitude);
                             if (latitude < -90 || latitude > 90) {
                                 System.out.println("*** Invalid latitude. It must be between -90 and 90.");
-                                continue;
+                                continue; // Prompt the user again
                             }
                             break; // Valid input
                         } catch (NumberFormatException e) {
@@ -244,12 +249,12 @@ public class sysmain {
                             if (inputLongitude.equalsIgnoreCase("cancel")) {
                                 System.out.println("\nReturning to the Airport Database menu...");
                                 cancel = true;
-                                break;
+                                break; // Exit the loop
                             }
                             longitude = Double.parseDouble(inputLongitude);
                             if (longitude < -180 || longitude > 180) {
                                 System.out.println("*** Invalid longitude. It must be between -180 and 180.");
-                                continue;
+                                continue; // Prompt the user again
                             }
                             break; // Valid input
                         } catch (NumberFormatException e) {
@@ -267,12 +272,12 @@ public class sysmain {
                             if (inputCommFreq.equalsIgnoreCase("cancel")) {
                                 System.out.println("\nReturning to the Airport Database menu...");
                                 cancel = true;
-                                break;
+                                break; // Exit the loop
                             }
                             commFrequencies = Double.parseDouble(inputCommFreq);
                             if (commFrequencies < 0) {
                                 System.out.println("*** Invalid communication frequency. It must be a non-negative value.");
-                                continue;
+                                continue; // Prompt the user again
                             }
                             break; // Valid input
                         } catch (NumberFormatException e) {
@@ -289,7 +294,7 @@ public class sysmain {
                         if (fuelTypes.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airport Database menu...");
                             cancel = true;
-                            break;
+                            break; // Exit the loop
                         }
                         if (fuelTypes.equalsIgnoreCase("JA-a") || fuelTypes.equalsIgnoreCase("AvGas")) {
                             break; // Valid input
@@ -299,7 +304,7 @@ public class sysmain {
                     }
                     if (cancel) break;
 
-                    // Add the airport to the database
+                    // Add the airport to the database with the provided information
                     airportManager.addAirport(icao, name, latitude, longitude, commFrequencies, fuelTypes);
                     System.out.println("Airport added successfully!");
                     break; // Exit the loop after successful addition
@@ -308,7 +313,7 @@ public class sysmain {
                 break;
 
             case "2":
-                // REMOVE AN AIRPORT
+                // Remove an airport
                 System.out.println("\nYou can type 'cancel' at any time to return to the Airport Database menu.");
                 while (true) {
                     System.out.print("\nEnter the ICAO code of the airport to remove: ");
@@ -316,27 +321,27 @@ public class sysmain {
                     if (icaoToRemove.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airport Database menu...");
                         cancel = true;
-                        break;
+                        break; // Exit the loop
                     }
                     if (icaoToRemove.isEmpty() || icaoToRemove.length() != 4 || !icaoToRemove.matches("[A-Za-z]+")) {
                         System.out.println("*** Invalid ICAO code. It must be a non-empty string of 4 alphabetic characters.");
-                        continue;
+                        continue; // Prompt the user again
                     }
                     int indexToRemove = airportManager.searchAirport(icaoToRemove);
                     if (indexToRemove == -1) {
                         System.out.println("*** The airport does not exist in the database. Please try again.");
-                        continue;
+                        continue; // Prompt the user again
                     }
 
                     airportManager.removeAirport(indexToRemove);
                     System.out.println("Airport removed successfully!");
-                    break;
+                    break; // Exit the loop after successful removal
                 }
                 if (cancel) break;
                 break;
 
             case "3":
-                // MODIFY AN AIRPORT
+                // Modify an airport
                 System.out.println("\nYou can type 'cancel' at any time to return to the Airport Database menu.");
                 int indexToModify = -1;
                 while (true) {
@@ -345,13 +350,14 @@ public class sysmain {
                     if (icaoToModify.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airport Database menu...");
                         cancel = true;
-                        break;
+                        break; // Exit the loop
                     }
                     if (icaoToModify.isEmpty() || icaoToModify.length() != 4 || !icaoToModify.matches("[A-Za-z]+")) {
                         System.out.println("*** Invalid ICAO code. It must be a non-empty string of 4 alphabetic characters.");
-                        continue;
+                        continue; // Prompt the user again
                     }
                     indexToModify = airportManager.searchAirport(icaoToModify);
+                    // checks if airport exists in the database
                     if (indexToModify == -1) {
                         System.out.println("*** The airport does not exist in the database. Please try again.");
                     } else {
@@ -371,7 +377,7 @@ public class sysmain {
                     if (newIcao.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airport Database menu...");
                         cancel = true;
-                        break;
+                        break; // Exit the loop
                     }
                     if (newIcao.isEmpty() || newIcao.length() != 4 || !newIcao.matches("[A-Za-z]+")) {
                         System.out.println("*** Invalid ICAO code. It must be a non-empty string of 4 alphabetic characters. Please try again.");
@@ -389,7 +395,7 @@ public class sysmain {
                     if (newName.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airport Database menu...");
                         cancel= true;
-                        break;
+                        break; // Exit the loop
                     }
                     if (newName.isEmpty()) {
                         System.out.println("*** Invalid airport name. It must be a non-empty string. Please try again.");
@@ -408,12 +414,12 @@ public class sysmain {
                         if (inputLatitude.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airport Database menu...");
                             cancel = true;
-                            break;
+                            break; // Exit the loop
                         }
                         newLatitude = Double.parseDouble(inputLatitude);
                         if (newLatitude < -90 || newLatitude > 90) {
                             System.out.println("*** Invalid latitude. It must be between -90 and 90.");
-                            continue;
+                            continue; // Prompt the user again
                         }
                         break; // Valid input
                     } catch (NumberFormatException e) {
@@ -430,13 +436,13 @@ public class sysmain {
                         String inputLongitude = input.nextLine();
                         if (inputLongitude.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airport Database menu...");
-                            cancel = true;
+                            cancel = true; // Exit the loop
                             break;
                         }
                         newLongitude = Double.parseDouble(inputLongitude);
                         if (newLongitude < -180 || newLongitude > 180) {
                             System.out.println("*** Invalid longitude. It must be between -180 and 180.");
-                            continue;
+                            continue; // Prompt the user again
                         }
                         break; // Valid input
                     } catch (NumberFormatException e) {
@@ -454,12 +460,12 @@ public class sysmain {
                         if (inputCommFreq.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airport Database menu...");
                             cancel = true;
-                            break;
+                            break; // Exit the loop
                         }
                         newCommFrequencies = Double.parseDouble(inputCommFreq);
                         if (newCommFrequencies < 0) {
                             System.out.println("*** Invalid communication frequency. It must be a non-negative value.");
-                            continue;
+                            continue; // Prompt the user again
                         }
                         break; // Valid input
                     } catch (NumberFormatException e) {
@@ -476,7 +482,7 @@ public class sysmain {
                     if (newFuelTypes.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airport Database menu...");
                         cancel = true;
-                        break;
+                        break; // Exit the loop
                     }
                     if (newFuelTypes.equalsIgnoreCase("JA-a") || newFuelTypes.equalsIgnoreCase("AvGas")) {
                         break; // Valid input
@@ -489,10 +495,10 @@ public class sysmain {
                 // Modify the airport in the database
                 airportManager.modifyAirport(newIcao, newName, newLatitude, newLongitude, newCommFrequencies, newFuelTypes, indexToModify);
                 System.out.println("Airport modified successfully!");
-                break;
+                break; // Exit the loop after successful modification
 
             case "4":
-                // VIEW A SINGLE AIRPORT
+                // View a single airport
                 System.out.println("\nYou can type 'cancel' at any time to return to the Airport Database menu.");
                 while (true) {
                     System.out.print("\nEnter the ICAO code of the airport to view: ");
@@ -500,42 +506,44 @@ public class sysmain {
                     if (icaoToView.equalsIgnoreCase("cancel")) {
                         System.out.println("\nReturning to the Airport Database menu...");
                         cancel = true;
-                        break;
+                        break; // Exit the loop
                     }
                     if (icaoToView.isEmpty() || icaoToView.length() != 4 || !icaoToView.matches("[A-Za-z]+")) {
                         System.out.println("*** Invalid ICAO code. It must be a non-empty string of 4 alphabetic characters.");
-                        continue;
+                        continue; // Prompt the user again
                     }
+                    // Seaches for the airport in the database using inputted ICAO and retrieves the index
                     int indexToView = airportManager.searchAirport(icaoToView);
                     if (indexToView == -1) {
                         System.out.println("*** The airport does not exist in the database. Please try again.");
-                        continue;
+                        continue; // Prompt the user again
                     }
-
+                    // Displays the airport information using the index
                     airportManager.displayAirport(indexToView);
-                    break;
+                    break; // Exit the loop after displaying the airport information
                 }
                 if (cancel) break;
                 break;
 
             case "5":
-                // VIEW ALL AIRPORTS
+                // View all airports
                 System.out.println("\n--- All Airports in the Database ---");
                 airportManager.displayAllAirports();
                 System.out.println("\nReturning to the Airport Database menu...");
-                break;
+                break; // Exit the loop after displaying all airports
 
             case "6":
-                // RETURN TO MAIN MENU
+                // Return to the main menu
                 System.out.println("Returning to the Main Menu...");
                 return;
 
             default:
+                // Invalid input
                 System.out.println("*** Invalid choice. Please enter a valid option.");
         }
     }
 }
-
+    // Uses AirplaneManager to manage the airplane database
     private static void manageAirplaneDatabase(Scanner input) {
         // Initializes Airplane Manager
         AirplaneManager AirMan = new AirplaneManager(new Airplane("", "", "", 0, 0, 0));
@@ -563,7 +571,7 @@ public class sysmain {
                         make = input.nextLine().trim();
                         if (make.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
-                            break;
+                            break; // Exit the loop
                         }
                         if (make.isEmpty()) {
                             System.out.println("*** Invalid make. It must be a non-empty string. Please try again.");
@@ -571,6 +579,7 @@ public class sysmain {
                         }
                         break; // Valid input
                     }
+                    // Check if the user wants to cancel
                     if (make.equalsIgnoreCase("cancel")) break;
 
                     // Model
@@ -580,11 +589,11 @@ public class sysmain {
                         model = input.nextLine().trim();
                         if (model.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
-                            break;
+                            break; // Exit the loop
                         }
                         if (model.isEmpty()) {
                             System.out.println("*** Invalid model. It must be a non-empty string. Please try again.");
-                            continue;
+                            continue; // Prompt the user again
                         }
                         break; // Valid input
                     }
@@ -603,7 +612,7 @@ public class sysmain {
                             type = input.nextLine();
                             if (type.equalsIgnoreCase("cancel")) {
                                 System.out.println("\nReturning to the Airplane Database menu...");
-                                break;
+                                break; // Exit the loop
                             }
                             if (type.equalsIgnoreCase("Jet") || type.equalsIgnoreCase("Prop") || type.equalsIgnoreCase("Turboprop")) {
                                 break; // Valid type
@@ -622,12 +631,12 @@ public class sysmain {
                                 String inputFuelCapacity = input.nextLine();
                                 if (inputFuelCapacity.equalsIgnoreCase("cancel")) {
                                     System.out.println("\nReturning to the Airplane Database menu...");
-                                    break;
+                                    break; // Exit the loop
                                 }
                                 fuelCapacity = Double.parseDouble(inputFuelCapacity);
                                 if (fuelCapacity < 0) {
                                     System.out.println("*** Fuel capacity cannot be negative. Please try again.");
-                                    continue;
+                                    continue; // Prompt the user again
                                 }
                                 break; // Valid input
                             } catch (NumberFormatException e) {
@@ -643,12 +652,12 @@ public class sysmain {
                                 String inputCruiseSpeed = input.nextLine();
                                 if (inputCruiseSpeed.equalsIgnoreCase("cancel")) {
                                     System.out.println("\nReturning to the Airplane Database menu...");
-                                    break;
+                                    break; // Exit the loop
                                 }
                                 cruiseSpeed = Double.parseDouble(inputCruiseSpeed);
                                 if (cruiseSpeed < 0) {
                                     System.out.println("*** Cruise speed cannot be negative. Please try again.");
-                                    continue;
+                                    continue; // Prompt the user again
                                 }
                                 break; // Valid input
                             } catch (NumberFormatException e) {
@@ -664,12 +673,12 @@ public class sysmain {
                                 String inputFuelBurnRate = input.nextLine();
                                 if (inputFuelBurnRate.equalsIgnoreCase("cancel")) {
                                     System.out.println("\nReturning to the Airplane Database menu...");
-                                    break;
+                                    break; // Exit the loop
                                 }
                                 fuelBurnRate = Double.parseDouble(inputFuelBurnRate);
                                 if (fuelBurnRate < 0) {
                                     System.out.println("*** Fuel burn rate cannot be negative. Please try again.");
-                                    continue;
+                                    continue; // Prompt the user again
                                 }
                                 break; // Valid input
                             } catch (NumberFormatException e) {
@@ -693,24 +702,24 @@ public class sysmain {
                         String airplaneMake = input.nextLine();
                         if (airplaneMake.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
-                            break;
+                            break; // Exit the loop
                         }
 
                         System.out.print("Enter the model of the airplane to remove: ");
                         String airplaneModel = input.nextLine();
                         if (airplaneModel.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
-                            break;
+                            break; // Exit the loop
                         }
 
                         int index = AirMan.searchAirplane(airplaneMake, airplaneModel);
                         if (index == -1) {
                             System.out.println("The airplane does not exist in the database. Please try again.");
-                            continue;
+                            continue; // Prompt the user again
                         }
 
                         AirMan.removeAirplane(index);
-                        break;
+                        break; // Exit the loop after successful removal
                     }
                     break;
 
@@ -723,7 +732,7 @@ public class sysmain {
                         String airplaneInput = input.nextLine();
                         if (airplaneInput.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
-                            break;
+                            break; // Exit the loop
                         }
 
                         String[] airplaneParts = airplaneInput.split(" ", 2);
@@ -734,14 +743,16 @@ public class sysmain {
 
                         String airplaneMakeToModify = airplaneParts[0];
                         String airplaneModelToModify = airplaneParts[1];
+                        // Search for the airplane in the database using the provided make and model and retrieve the index
                         indexToModify = AirMan.searchAirplane(airplaneMakeToModify, airplaneModelToModify);
                         if (indexToModify == -1) {
                             System.out.println("*** The airplane does not exist in the database. Please try again.");
                         } else {
                             System.out.println("Airplane found!");
-                            break;
+                            break; // Exit the loop
                         }
                     }
+                    // if the airplane is not found, exit the loop
                     if (indexToModify == -1) break;
 
                     // Make
@@ -751,11 +762,11 @@ public class sysmain {
                         make = input.nextLine().trim();
                         if (make.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
-                            break;
+                            break; // Exit the loop
                         }
                         if (make.isEmpty()) {
                             System.out.println("*** Invalid make. It must be a non-empty string. Please try again.");
-                            continue;
+                            continue; // Prompt the user again
                         }
                         break; // Valid input
                     }
@@ -768,11 +779,11 @@ public class sysmain {
                         model = input.nextLine().trim();
                         if (model.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
-                            break;
+                            break; // Exit the loop
                         }
                         if (model.isEmpty()) {
                             System.out.println("*** Invalid model. It must be a non-empty string. Please try again.");
-                            continue;
+                            continue; // Prompt the user again
                         }
                         break; // Valid input
                     }
@@ -784,7 +795,7 @@ public class sysmain {
                         type = input.nextLine();
                         if (type.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
-                            break;
+                            break; // Exit the loop
                         }
                         if (type.equalsIgnoreCase("Jet") || type.equalsIgnoreCase("Prop") || type.equalsIgnoreCase("Turboprop")) {
                             break; // Valid type
@@ -803,19 +814,19 @@ public class sysmain {
                             String inputFuelCapacity = input.nextLine();
                             if (inputFuelCapacity.equalsIgnoreCase("cancel")) {
                                 System.out.println("\nReturning to the Airplane Database menu...");
-                                break;
+                                break; // Exit the loop
                             }
                             fuelCapacity = Double.parseDouble(inputFuelCapacity);
                             if (fuelCapacity <= 0) {
                                 System.out.println("*** Fuel capacity must be greater than 0. Please try again.");
-                                continue;
+                                continue; // Prompt the user again
                             }
                             break;
                         } catch (NumberFormatException e) {
                             System.out.println("*** Invalid input. Please enter a numeric value for fuel capacity.");
                         }
                     }
-                    if (fuelCapacity == 0) break;
+                    if (fuelCapacity == 0) break; 
 
                     // Validate Cruise Speed
                     while (true) {
@@ -824,12 +835,12 @@ public class sysmain {
                             String inputCruiseSpeed = input.nextLine();
                             if (inputCruiseSpeed.equalsIgnoreCase("cancel")) {
                                 System.out.println("\nReturning to the Airplane Database menu...");
-                                break;
+                                break; // Exit the loop
                             }
                             cruiseSpeed = Double.parseDouble(inputCruiseSpeed);
                             if (cruiseSpeed <= 0) {
                                 System.out.println("*** Cruise speed must be greater than 0. Please try again.");
-                                continue;
+                                continue; // Prompt the user again
                             }
                             break;
                         } catch (NumberFormatException e) {
@@ -845,12 +856,12 @@ public class sysmain {
                             String inputFuelBurnRate = input.nextLine();
                             if (inputFuelBurnRate.equalsIgnoreCase("cancel")) {
                                 System.out.println("\nReturning to the Airplane Database menu...");
-                                break;
+                                break; // Exit the loop
                             }
                             fuelBurnRate = Double.parseDouble(inputFuelBurnRate);
                             if (fuelBurnRate <= 0) {
                                 System.out.println("*** Fuel burn rate must be greater than 0. Please try again.");
-                                continue;
+                                continue; // Prompt the user again
                             }
                             break;
                         } catch (NumberFormatException e) {
@@ -862,7 +873,7 @@ public class sysmain {
                     // Modify the airplane
                     AirplaneManager.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate, indexToModify);
                     System.out.println("Airplane modified successfully!");
-                    break;
+                    break; // Exit the loop after successful modification
 
                 case "4":
                     // View a Single Airplane
@@ -872,7 +883,7 @@ public class sysmain {
                         String airplaneInput = input.nextLine();
                         if (airplaneInput.equalsIgnoreCase("cancel")) {
                             System.out.println("\nReturning to the Airplane Database menu...");
-                            break;
+                            break; // Exit the loop
                         }
                 
                         String[] airplaneParts = airplaneInput.split(" ", 2);
@@ -901,13 +912,14 @@ public class sysmain {
                     System.out.println("\n--- All Airplanes in the Database ---");
                     AirMan.displayAllAirplanes();
                     System.out.println("\nReturning to the Airplane Database menu...");
-                    break;
+                    break; // Exit the loop after displaying all airplanes
 
                 case "6":
                     // Return to the Main Menu
                     System.out.println("\nReturning to the Main Menu...");
-                    return;
+                    return; 
 
+                // Default case for invalid input
                 default:
                     System.out.println("Invalid choice. Please enter a valid option.");
             }

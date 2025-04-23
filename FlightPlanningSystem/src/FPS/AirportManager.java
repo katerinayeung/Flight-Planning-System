@@ -1,7 +1,7 @@
-/*Manages all Airplane objects. 
- *Provides methods to add, remove, modify, and search for airports in the database.
- */
-
+/*  AirportManager.java
+    This class is responsible for managing all aspects of 
+    manipulating and interacting with airports in the database
+    this includes adding, removing, modifying, displaying, and searching for airports*/
 package FPS;
 import java.io.*;
 import java.util.*;
@@ -15,7 +15,7 @@ public class AirportManager {
         this.airport = airport;
     }
 
-    // Getter
+    // returns a specific airport object from the database based on the index
     public Airport getAirport(int index) {
         String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -43,7 +43,7 @@ public class AirportManager {
         this.airport = airport;
     }
 
-// Add airport to the database
+// Adds an airport to the database usig the provided parameters
    public void addAirport(String icao, String name, double latitude, double longitude, double commFrequencies, String fuelTypes) {
             
     // Add airport to database (e.g., write to file)
@@ -56,7 +56,7 @@ public class AirportManager {
         
 }
 
-// Remove airport from the database
+// Remove airport from the database using the provided index
 public void removeAirport(int index) {
     String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat";
     List<String> airports = new ArrayList<>();
@@ -132,7 +132,7 @@ public void removeAirport(int index) {
         }
     }
 
-// Search for an airport by ICAO or name
+// Search for an airport by ICAO code and return its index (helper method)
     public int searchAirport(String icao) {
         try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat"))) {
             String line;
@@ -154,7 +154,7 @@ public void removeAirport(int index) {
         }
         return -1; // Return -1 if no match is found
     }
-    // Display all airports in the database
+    // Display all airports in the database with formatted output
     public void displayAllAirports() {
         String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/airports.dat";
 

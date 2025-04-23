@@ -1,3 +1,7 @@
+/* Flight.java
+ *  This class contains all necessary properties and methods to create a flight from
+ *  a start airport to an end airport, including layovers and multiple destinations.
+ */
 package FPS;
 
 import java.util.ArrayList;
@@ -6,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Flight {
+    // Attributes
     private Airport start;
     private Airport end;
     private Airplane airplane;
@@ -50,10 +55,10 @@ public class Flight {
         totalDistance = 0.0; // Reset total distance
         List<Airport> visitedAirports = new ArrayList<>(); // Track visited airports
         visitedAirports.add(currentAirport);
-    
+        // runs calculation for each mandatory stop
         for (Airport destination : mandatoryStops) {
             double remainingDistance = calculateDistance(currentAirport, destination);
-    
+            //Keep creating layovers until the remaining distance is within the airplane's range
             while (remainingDistance > airplane.calculateRange()) {
                 List<Airport> allAirports = AirportManager.getAllAirports();
                 List<Airport> possibleStops = new ArrayList<>();
@@ -92,10 +97,9 @@ public class Flight {
                 currentAirport = bestStop;
                 remainingDistance = calculateDistance(currentAirport, destination);
     
-                // Check if remaining distance did not change
+                // Check if remaining distance did not change to avoid infinite loop 
                 if (remainingDistance == previousRemainingDistance) {
                     throw new Exception("No refueling airports available within range. Flight is impossible.");
-                    //break; // Exit the loop to prevent infinite iteration
                 }
             }
     
@@ -108,12 +112,13 @@ public class Flight {
         return layovers;
     }
 
-    // Generate flight legs (start → layovers → end)
+    // Generates the legs of the flight based on start, end, and layovers
+    // Each leg contains start and end airports, distance, heading, and time
     public void generateLegs() {
         List<Airport> allStops = new ArrayList<>();
         allStops.add(start);
         allStops.addAll(layovers);
-
+        // repeats based on the number of stops
         for (int i = 0; i < allStops.size() - 1; i++) {
             Airport legStart = allStops.get(i);
             Airport legEnd = allStops.get(i + 1);
@@ -133,7 +138,7 @@ public class Flight {
         }
     }
 
-    // Calculate heading between two airports (simplified for flat Earth)
+    // Calculates heading between two airports (simplified for flat Earth)
     public double calculateHeading(Airport a, Airport b) {
         double latDiff = b.getLatitude() - a.getLatitude();
         double lonDiff = b.getLongitude() - a.getLongitude();

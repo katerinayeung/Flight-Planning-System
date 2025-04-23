@@ -1,3 +1,6 @@
+/* FlightPlan.java
+   This class uses the Flight class to display the full flight plan for a given flight.
+   It includes the departure and arrival airports, total distance, and each leg of the flight with its details. */
 package FPS;
 
 import java.util.List;
@@ -12,7 +15,7 @@ public class FlightPlan {
         this.flight = flight;
     }
 
-    // Display the full flight plan
+    // Displays the full formatted flight plan
     public void displayPlan() {
         System.out.println("------------------------------------------------------------");
         System.out.println("Flight Plan for " + flight.getAirplane().getMake() + " " + flight.getAirplane().getModel());
@@ -20,7 +23,7 @@ public class FlightPlan {
         System.out.println("Arrival Airport: " + flight.getEnd().getName() + " (" + flight.getEnd().getIcao() + ")");
         System.out.println("Total Distance: " + String.format("%.2f", flight.getTotalDistance()) + " km");
         System.out.println("------------------------------------------------------------");
-    
+
         List<Map<String, Object>> legs = flight.getLegs();
         for (int i = 0; i < legs.size(); i++) {
             Map<String, Object> leg = legs.get(i);
@@ -28,9 +31,10 @@ public class FlightPlan {
             Airport end = (Airport) leg.get("end");
             double distance = (double) leg.get("distance");
             double heading = (double) leg.get("heading");
+            // Calculate time in hours and minutes
             double timeHours = ((double) leg.get("time")) % 60;
             double timeMinutes = ((double) leg.get("time")) * 60 % 60;
-    
+            // prints the leg information
             System.out.println("Leg " + (i + 1) + ":");
             System.out.println("  Departure Airport: " + start.getName() + " (" + start.getIcao() + ")");
             System.out.println("  Communication Frequency: " + String.format("%.2f", start.getCommFrequencies()) + " MHz");
@@ -47,7 +51,7 @@ public class FlightPlan {
         System.out.println("------------------------------------------------------------");
     }
 
-    // Calculate the total fuel required for the flight
+    // Calculate the total fuel required for the flight (helper method)
     private double calculateTotalFuelRequired() {
         double totalFuel = 0;
         List<Map<String, Object>> legs = flight.getLegs();

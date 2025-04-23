@@ -1,3 +1,6 @@
+/*  AirplaneManager.java
+    This class governs all methods regarding manipulating airplanes in the database 
+   this includes adding, removing, modifying, displaying, and searching for airplanes */
 package FPS;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,7 +20,7 @@ public class AirplaneManager extends Airplane {
     public void setAirplane(Airplane airplane) {
         this.airplane = airplane;
     }
-
+    // returns an airplane object for use by seaching for it based on its index in the database
     public Airplane getAirplane(int index) {
         String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -39,11 +42,10 @@ public class AirplaneManager extends Airplane {
         }
         return null; // Return null if no airplane is found at the specified index
     }
-
+    // Adds a new airplane inot the database using the parameters provided by the user
     public void addAirplane(String make, String model, String type, double fuelCapacity, double cruiseSpeed, double fuelBurnrate) {
         String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat";
         List<String> airplanes = new ArrayList<>();
-        boolean airplaneAdded = false;
     
         // Read all lines into a list
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -78,7 +80,7 @@ public class AirplaneManager extends Airplane {
     
         System.out.println("Airplane added successfully!");
     }
-
+    // Removes an airplane from the database using its index
    public void removeAirplane(int index) {
     String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat";
     List<String> airplanes = new ArrayList<>();
@@ -122,7 +124,7 @@ public class AirplaneManager extends Airplane {
 
     System.out.println("\nAirplane removed and list updated successfully.");
     }
-
+    // Updates an airplane in the database using the parameters provided by the user and the index of the airplane to be updated
     public static void modifyAirplane(String make, String model, String type, double fuelCapacity, double cruiseSpeed, double fuelBurnrate, int index) {
         String filePath = System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat";
         StringBuilder updatedContent = new StringBuilder();
@@ -153,7 +155,8 @@ public class AirplaneManager extends Airplane {
         }
         System.out.println("Airplane modified successfully!");
     }
-
+    // Search method used by airplane manager to find an airplane in the database using its make and model
+    // Returns the index of the airplane if found, otherwise returns -1 (only used by the airplane manager as a helper method)
     public int searchAirplane(String make, String model) {
         try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
             String line;
@@ -176,41 +179,7 @@ public class AirplaneManager extends Airplane {
         }
         return -1; // Return -1 if no match is found
     }
-
-    public static Airplane readAirplaneFromFile(int index) {
-        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
-            String line = null;
-    
-            // Skip lines until the desired index
-            for (int i = 0; i <= index; i++) {
-                line = br.readLine();
-                if (line == null) {
-                    throw new IOException("Reached end of file before finding the specified line.");
-                }
-            }
-    
-            // Process the specific line
-            String[] fields = line.split(",");
-            if (fields.length == 6) {
-                String make = fields[0];
-                String model = fields[1];
-                String type = fields[2];
-                double fuelCapacity = Double.parseDouble(fields[3]);
-                double cruiseSpeed = Double.parseDouble(fields[4]);
-                double fuelBurnrate = Double.parseDouble(fields[5]);
-    
-                // Create and return the Airplane object
-                return new Airplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnrate);
-            } else {
-                throw new IOException("Invalid data format on the specified line.");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    
-        return null; // Return null if an error occurs
-    }
-
+    // Display all airplanes in the database in a table format
     public void displayAllAirplanes() {
         try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
             String line;
@@ -246,47 +215,47 @@ public class AirplaneManager extends Airplane {
             e.printStackTrace();
         }
     }
-    // Display a single airplane
-public void displayAirplane(int index) {
-    try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
-        String line;
-        int currentIndex = 0;
+    // Display a single airplane in the database using its index in a table format
+    public void displayAirplane(int index) {
+        try (BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/FlightPlanningSystem/src/FPS/database/Airplanes.dat"))) {
+            String line;
+            int currentIndex = 0;
 
-        // Print table header
-        System.out.printf("%-15s %-15s %-10s %-15s %-20s %-15s%n", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
-        System.out.println("-----------------------------------------------------------------------------------------------");
+            // Print table header
+            System.out.printf("%-15s %-15s %-10s %-15s %-20s %-15s%n", "Make", "Model", "Type", "Fuel Cap. (L)", "Cruise Speed (kts)", "Fuel Burn (L/hr)");
+            System.out.println("-----------------------------------------------------------------------------------------------");
 
-        // Read the file line by line
-        while ((line = br.readLine()) != null) {
-            if (currentIndex == index) {
-                line = line.trim(); // Remove leading and trailing whitespace
-                if (line.isEmpty()) {
-                    System.out.println("No airplane found at the specified index.");
-                    return;
+            // Read the file line by line
+            while ((line = br.readLine()) != null) {
+                if (currentIndex == index) {
+                    line = line.trim(); // Remove leading and trailing whitespace
+                    if (line.isEmpty()) {
+                        System.out.println("No airplane found at the specified index.");
+                        return;
+                    }
+
+                    String[] fields = line.split(",");
+                    if (fields.length == 6) {
+                        System.out.printf("%-15s %-15s %-10s %-15s %-20s %-15s%n",
+                                fields[0], // Make
+                                fields[1], // Model
+                                fields[2], // Type
+                                fields[3], // Fuel Capacity
+                                fields[4], // Cruise Speed
+                                fields[5]  // Fuel Burn Rate
+                        );
+                    } else {
+                        System.out.println("Invalid data format at the specified index.");
+                    }
+                    return; // Exit after displaying the airplane
                 }
-
-                String[] fields = line.split(",");
-                if (fields.length == 6) {
-                    System.out.printf("%-15s %-15s %-10s %-15s %-20s %-15s%n",
-                            fields[0], // Make
-                            fields[1], // Model
-                            fields[2], // Type
-                            fields[3], // Fuel Capacity
-                            fields[4], // Cruise Speed
-                            fields[5]  // Fuel Burn Rate
-                    );
-                } else {
-                    System.out.println("Invalid data format at the specified index.");
-                }
-                return; // Exit after displaying the airplane
+                currentIndex++;
             }
-            currentIndex++;
-        }
 
-        // If the index is not found
-        System.out.println("No airplane found at the specified index.");
-    } catch (IOException e) {
-        e.printStackTrace();
+            // If the index is not found
+            System.out.println("No airplane found at the specified index.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 }

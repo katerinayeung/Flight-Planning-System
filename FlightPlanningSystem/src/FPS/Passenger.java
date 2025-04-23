@@ -1,8 +1,12 @@
+// Passenger.java
+// This class stores all of the user information used for a flight plan
+// It includes the passenger name, list of destinations, starting airport, and selected plane
 package FPS;
 
 import java.util.List;
 
 public class Passenger {
+    // Attributes
     private String name;
     private List<String> destinations;
     private String selectedPlane;
