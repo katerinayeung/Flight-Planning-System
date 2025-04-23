@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AirplaneManager extends Airplane {
+public class AirplaneManager {
     private Airplane airplane;
 
     public AirplaneManager(Airplane airplane) {
