@@ -872,7 +872,6 @@ public class sysmain {
 
                     // Modify the airplane
                     AirplaneManager.modifyAirplane(make, model, type, fuelCapacity, cruiseSpeed, fuelBurnRate, indexToModify);
-                    System.out.println("Airplane modified successfully!");
                     break; // Exit the loop after successful modification
 
                 case "4":
