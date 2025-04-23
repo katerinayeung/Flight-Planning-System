@@ -1436,7 +1436,7 @@ CYXZ,Wawa Airport,47.9667,-84.7867,130.0,JA-a
 CYYB,North Bay/Jack Garland Airport,46.3636,-79.4228,133.0,JA-a
 CYYU,Kapuskasing Airport,49.4139,-82.4675,136.0,JA-a
 CYYW,Armstrong Airport,50.2903,-88.9097,127.0,JA-a
-CYYZ,Toronto Pearson International Airport,43.6797,-79.6227,136.0,JA-a
+FVWT,Hwange Town Airport,-18.363,26.5198,136.0,JA-a
 CYZE,Gore Bay-Manitoulin Airport,45.8853,-82.5678,129.0,JA-a
 CYZR,Sarnia Chris Hadfield Airport,42.9994,-82.3089,118.0,AvGas
 CZKE,Kashechewan Airport,52.2825,-81.6778,122.0,AvGas
@@ -7893,6 +7893,5 @@ FVMV,Masvingo Airport,-20.0553,30.8591,134.0,AvGas
 FVWN,Hwange National Park Airport,-18.6299,27.021,125.0,JA-a
 FVFA,Victoria Falls Airport,-18.0959,25.839,132.0,AvGas
 FVTL,Thornhill Air Base,-19.4364,29.8619,125.0,JA-a
-test,testing,90.0,90.0,90.0,ja-a
-FVWT,Hwange Town Airport,-18.363,26.5198,136.0,JA-a
-MNOP,Aikenville,20.0,49.343455,2000.0,ja-a
+
+CYYZ,Toronto International Airport,43.6,-79.6,120.0,JA-a

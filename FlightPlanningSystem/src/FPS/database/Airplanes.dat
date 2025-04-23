@@ -10,6 +10,4 @@ Bombardier,GLEX,Jet,24333,490,2020
 Embraer,E55P,Jet,3037,450,694
 Northrop,B2,Jet,207000,650,9983
 Pilatus,PC12,Turboprop,1520,270,208
-Boeing,787,Jet,126372.0,488.0,500.0
-Aiken,333,jet,2200.0,350.0,180.0
-t,t,jet,2.0,500.0,1.0
+Airbus,A380,Turboprop,10000.0,108.0,3000.0

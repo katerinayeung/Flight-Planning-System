@@ -32,7 +32,7 @@ public class sysmain {
         Passenger user = new Passenger(name, new ArrayList<>(), null);
 
         // Main Menu
-        System.out.println("\nWelcome " + user.getName() + " to the Flight Planning System! How could I help you today?");
+        System.out.println("\nWelcome to the Flight Planning System! How could I help you today " + user.getName() + "?");
         while (true) {
             System.out.println("\n1 Plan a flight\n2 Manage Airport Database\n3 Manage Airplane Database\n4 Close Application");
             System.out.print("\nEnter your choice: ");
@@ -53,7 +53,7 @@ public class sysmain {
                     break;
                 case "4":
                     // Close Application
-                    System.out.println("\nThank you for using the Flight Planning System. Goodbye!");
+                    System.out.println("\nThank you for using the Flight Planning System. Goodbye " + user.getName() + "!");
                     System.exit(0);
                     break;
                 default:

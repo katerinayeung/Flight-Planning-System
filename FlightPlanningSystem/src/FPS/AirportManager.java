@@ -230,7 +230,7 @@ public void removeAirport(int index) {
 
             // Print table header with extended space for the "Name" column
             System.out.printf("%-10s %-30s %-10s %-10s %-15s %-10s%n", "ICAO", "Name", "Latitude", "Longitude", "Comm Freq", "Fuel Types");
-            System.out.println("------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------");
 
             // Read the file line by line
             while ((line = br.readLine()) != null) {
